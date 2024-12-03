@@ -24,7 +24,7 @@ const App = () => {
             
           }}>
           {/* Uncomment the line below to enable Login screen */}
-          <Stack.Screen name="login" component={Login} />
+          {/* <Stack.Screen name="login" component={Login} /> */}
           <Stack.Screen name="BottomTab" component={BottomTab} />
           <Stack.Screen name="maps" component={MapScreen} />
           <Stack.Screen name="details" component={Details} />

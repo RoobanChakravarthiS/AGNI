@@ -5,7 +5,7 @@ buildscript {
         compileSdkVersion = 35
         targetSdkVersion = 34
         ndkVersion = "26.1.10909125"
-        
+        googlePlayServicesVersion      = "17.0.0"
         kotlinVersion = '1.9.0' // Variable now included for React Native core
         kotlin_version = kotlinVersion // Used by react-native-camera-kit
     }

@@ -286,7 +286,7 @@ const Home = ({navigation}) => {
           <Button
             mode="contained"
             textColor="#FFFFFF"
-            onPress={() => navigation.navigate('Scan')}
+            onPress={() => navigation.navigate('maps')}
             style={styles.okButton}>
             <Text style={styles.buttonText}>Start Inspection</Text>
           </Button>
