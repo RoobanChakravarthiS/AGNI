@@ -263,12 +263,12 @@ const Home = ({navigation}) => {
   }, [selectedDate]);
 
   const handleDetails = data => {
-    console.log(data.details.ApplicationDetail.Setbacks)
+    // console.log(data.details.ApplicationDetail.Setbacks)
     navigation.navigate('details', data);
   };
 
   const renderEventItem = ({item}) => {
-   console.log(item)
+  //  console.log(item)
     return (
       <Card style={styles.card}>
         <Card.Title

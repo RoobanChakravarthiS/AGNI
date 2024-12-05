@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 
 const Details = ({ route, navigation }) => {
   const data = route.params;
-  console.log(data)
+  // console.log(data)
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.card}>

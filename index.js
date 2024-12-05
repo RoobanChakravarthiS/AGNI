@@ -50,7 +50,7 @@ const sendNotification = () => {
     console.log('Started sending notification');
     PushNotification.localNotification({
         channelId: 'test1', // Make sure this matches the channel created above
-        title: 'Title', // Notification Title
+        title: 'poda pundamanee', // Notification Title
         message: 'Message', // Notification Message
         playSound: true,
         soundName: 'default',

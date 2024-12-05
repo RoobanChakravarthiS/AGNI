@@ -5,7 +5,7 @@ import {Camera, CameraType} from 'react-native-camera-kit';
 const Scan = ({navigation}) => {
   const handleRead = (event)=>{
     console.log(event.nativeEvent.codeStringValue)
-    Alert.alert('QR code found');
+    // Alert.alert('QR code found');
     navigation.navigate('norms')
     SetScanned(false)
   }
