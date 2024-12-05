@@ -2,10 +2,11 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, { useState } from 'react';
 import {Alert} from 'react-native';
 import {Camera, CameraType} from 'react-native-camera-kit';
-const Scan = () => {
+const Scan = ({navigation}) => {
   const handleRead = (event)=>{
     console.log(event.nativeEvent.codeStringValue)
     Alert.alert('QR code found');
+    navigation.navigate('norms')
     SetScanned(false)
   }
   const[scanned,SetScanned] = useState(true)

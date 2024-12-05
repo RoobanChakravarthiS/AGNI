@@ -57,7 +57,7 @@ const BottomTab = () => {
           headerTitle: 'Inspection',
           headerTitleStyle: {fontFamily: 'DMSans ExtraBold'}, // Correct way to set title
           headerRight: () => (
-            <Button onPress={()=>handleNotificationpress}>
+            <Button onPress={()=>handleNotificationpress()}>
               <Image
                 source={require('../assets/notifications.png')}
                 style={{width: 24, height: 24}}

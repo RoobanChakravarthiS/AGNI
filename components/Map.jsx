@@ -9,7 +9,7 @@ const Map = () => {
     latitude: null,
     longitude: null,
   });
-  const destination = {latitude: 10.931908, longitude: 76.949716};
+  const destination = {latitude: 10.931908, longitude: 76.21343};
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCyZYuKJc4YREy3ppZxlnODX_HL7sJlAbk';
 
   useEffect(() => {

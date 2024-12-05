@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, FlatList} from 'react-native';
 import {Avatar, Button, Card, Text, Divider} from 'react-native-paper';
 import Calendar from 'react-native-calendars/src/calendar';
-
+import {PermissionsAndroid} from 'react-native';
 const LeftContent = props => (
   <Avatar.Image
     {...props}
@@ -12,6 +12,7 @@ const LeftContent = props => (
   />
 );
 const Home = ({navigation}) => {
+  PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
   const events = [
     {
       id: 'ABC123001',
@@ -288,7 +289,7 @@ const Home = ({navigation}) => {
             textColor="#FFFFFF"
             onPress={() => navigation.navigate('maps')}
             style={styles.okButton}>
-            <Text style={styles.buttonText}>Start Inspection</Text>
+            <Text style={styles.okbuttonText}>Directions</Text>
           </Button>
           <Button
             mode="eleveated"
@@ -345,6 +346,11 @@ const styles = StyleSheet.create({
     fontFamily:'DMSans Bold',
     color: '#2b2e36',
   },
+  okbuttonText: {
+    fontSize: 14,
+    fontFamily:'DMSans Bold',
+    color: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
@@ -381,7 +387,7 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: 15,
     color: '#2b2e36',
-    fontFamily:'DMSans Bold'
+    fontFamily:'DMSans Regular'
   },
   remarkText: {
     fontSize: 13,
@@ -396,7 +402,8 @@ const styles = StyleSheet.create({
   okButton: {
     backgroundColor: '#ff8400',
     borderRadius: 4,
-    
+    color:'#fff',
+    fontFamily:'DM Sans Bold'
     // paddingVertical: 5,
   },
   detailsButton: {

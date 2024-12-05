@@ -1,0 +1,906 @@
+{
+  "RES": {
+    "buildingtype": "Residential",
+    "categories": [
+      {
+        "height": "Less than 15 meters",
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Covering all areas of each floor (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area exceeding 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "5,000 liters; 10,000 liters if the basement is sprinklered."
+          },
+          "Fire Pumps": {
+            "Terrace Level": "450 LPM; 900 LPM if the basement is sprinklered."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2, not adjacent, remote from each other.",
+            "Exit Signage": "Glow type with battery backup.",
+            "Emergency Lights": "At staircase landing and exit routes."
+          },
+          "Additional Provisions": {
+            "Fire Drills": "To be conducted once per year.",
+            "Lightning Arrester": "Mandatory.",
+            "Cable and Duct Sealing": "Sealed at each floor to prevent smoke, heat, and flame spread."
+          }
+        }
+      },
+      {
+        "height": "15 to 30 meters",
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Provided at each floor (per 1000 m2).",
+          "Wet Riser": "Required for each floor (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area exceeding 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "25,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump, 1620 LPM each; 180 LPM jockey pump."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2, not adjacent, remote from each other.",
+            "Exit Signage": "Glow type with battery backup.",
+            "Emergency Lights": "At staircase landing and exit routes."
+          },
+          "Additional Provisions": {
+            "Refuge Area": "At or just above 24 meters if a balcony is not provided.",
+            "Fire Drills": "To be conducted once per year.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      },
+      {
+        "height": "30 to 45 meters",
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Provided at each floor (per 1000 m2).",
+          "Wet Riser": "Required for each floor (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area exceeding 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "25,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump, 1620 LPM each; 180 LPM jockey pump."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2, not adjacent, remote from each other.",
+            "Exit Signage": "Glow type with battery backup.",
+            "Emergency Lights": "At staircase landing and exit routes."
+          },
+          "Additional Provisions": {
+            "Refuge Area": "At or just above 24 meters and every additional 15 meters.",
+            "Fire Drills": "To be conducted once per year.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      },
+      {
+        "height": "45 to 60 meters",
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Provided at each floor (per 1000 m2).",
+          "Wet Riser": "Required for each floor (per 1000 m2).",
+          "Automatic Sprinkler System": "Mandatory for the entire building including the basement.",
+          "Water Storage": {
+            "Terrace Tank": "25,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump, 2280 LPM each; 180 LPM jockey pump."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2, not adjacent, remote from each other.",
+            "Exit Signage": "Glow type with battery backup.",
+            "Emergency Lights": "At staircase landing and exit routes."
+          },
+          "Additional Provisions": {
+            "Refuge Area": "At or just above 24 meters and every additional 15 meters.",
+            "Fire Control Room": "To be provided.",
+            "Fire Drills": "To be conducted once per year.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      },
+      {
+        "height": "Above 60 meters",
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per 600 m2 per floor.",
+          "Hose Reel Assembly": "Provided at each floor (per 1000 m2).",
+          "Wet Riser": "Required for each floor (per 1000 m2).",
+          "Automatic Sprinkler System": "Mandatory for the entire building including the basement.",
+          "Water Storage": {
+            "Terrace Tank": "25,000 liters.",
+            "Underground Tank": "100,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump, 2280 LPM each; 180 LPM jockey pump."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2, not adjacent, remote from each other.",
+            "Fire Lifts": "1 lift per 1200 m2.",
+            "Refuge Area": "At or just above 24 meters and every additional 15 meters.",
+            "Helipad": "Mandatory for buildings above 60 meters."
+          },
+          "Additional Provisions": {
+            "Public Address System": "Mandatory.",
+            "Fire Drills": "To be conducted once per year.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      }
+    ]
+  },
+  "EDU": {
+    "buildingtype": "Educational",
+    "categories": [
+      {
+        "height": "Less than 15 meters",
+        "subdivision": [
+          "Schools up to Senior Secondary Level",
+          "Training Institutions"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Automatic Sprinkler System": "Only for basement area if the area is more than 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "5,000 liters if the basement is sprinklered."
+          },
+          "Fire Pumps": {
+            "Terrace Level": "450 LPM capacity if the basement is sprinklered."
+          },
+          "Life Safety": {
+            "Staircases": "2 Nos, 1.5 meters wide, remote from each other.",
+            "Side Set Back Area": "As per CMDA rules or local body rules."
+          },
+          "Additional Provisions": {
+            "Lightning Arrester": "Mandatory.",
+            "Housekeeping": "Building must be maintained clean and neat."
+          }
+        }
+      },
+      {
+        "height": "15 to 30 meters",
+        "subdivision": [
+          "Schools up to Senior Secondary Level",
+          "Training Institutions"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided for all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area if the area exceeds 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "10,000 liters; an additional 5,000 liters if the basement is sprinklered."
+          },
+          "Fire Pumps": {
+            "Terrace Level": "450 LPM (+450 LPM if the basement is sprinklered)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, 1.5 meters wide, located remotely.",
+            "Side Set Back Area": "As per CMDA rules or local body rules."
+          },
+          "Additional Provisions": {
+            "Lightning Arrester": "Mandatory.",
+            "Housekeeping": "Building must be maintained clean and neat."
+          }
+        }
+      },
+      {
+        "height": "30 meters and above",
+        "subdivision": [
+          "Schools up to Senior Secondary Level",
+          "Training Institutions"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "To be provided for all floors (per 1000 m2).",
+          "Down Comer": "Provided at all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area if the area exceeds 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "25,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump of 2280 LPM each, plus 180 LPM jockey pump.",
+            "Terrace Level": "900 LPM capacity."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, 1.5 meters wide, located remotely.",
+            "Side Set Back Area": "7 meters all around the building.",
+            "Classroom Exits": "Rooms with over 45 capacity must have at least two doorways."
+          },
+          "Additional Provisions": {
+            "Lightning Arrester": "Mandatory.",
+            "Public Address System": "To be provided.",
+            "Assembly Points": "Designated for evacuation."
+          }
+        }
+      }
+    ]
+  },
+  "INS": {
+    "buildingtype": "Institutional",
+    "categories": [
+      {
+        "height": "Less than 15 meters",
+        "subdivision": [
+          "Hospitals, Sanatoria and Nursing Homes (up to 1000 sq.m.)"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Provided for all floors (per 1000 m2).",
+          "Down Comer System": "To be provided covering all floors for building categories (ii) and (iii); not required for category (iv).",
+          "Wet Riser System": "Not required for categories (i), (ii), and (iii); required for (iv).",
+          "Automatic Sprinkler System": "Required for basement areas if the area exceeds 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "5,000 liters (+5,000 liters if the basement is sprinklered) for categories (ii), (iii), and (iv).",
+            "Underground Tank": "50,000 liters for category (iv)."
+          },
+          "Fire Pumps": {
+            "Terrace Level": "450 LPM (+450 LPM if the basement is sprinklered) for categories (ii), (iii).",
+            "Ground Level": "One electric and one diesel pump of each capacity 1620 LPM, and an electric pump of 180 LPM (for category iv)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum of 2 Nos, 2 meters wide, located remotely from each other.",
+            "Ramp": "One No. for easy evacuation of stretcher patients.",
+            "Compartmentalization": "Areas over 500 m2 on individual floors to be segregated by fire-resistant walls.",
+            "Fire Lift": "One No. per 1200 m2, with provision for evacuating stretcher patients.",
+            "Smoke Ventilation System": "To be provided in the basement and other completely covered areas.",
+            "Exit Signage": "Glow type with alternate power supply or battery backup.",
+            "Public Address System": "To be provided for announcements during an emergency.",
+            "Lightning Arrester": "To be provided."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained neat and clean.",
+            "Fire Drill": "To be conducted once per year; fire order to be prepared and kept ready.",
+            "Evacuation Route Plan": "To be displayed at prominent places.",
+            "Training": "Staff should be trained in preliminary fire fighting and evacuation management."
+          }
+        }
+      },
+      {
+        "height": "15 to 30 meters",
+        "subdivision": ["Hospitals, Sanatoria and Nursing Homes"],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "Provided for all floors (per 1000 m2).",
+          "Wet Riser System": "Provided for all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "Required for basement areas if the area exceeds 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "10,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Terrace Level": "450 LPM (+450 LPM if the basement is sprinklered).",
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum 2 Nos, 2 meters wide, located remotely from each other.",
+            "Fire Lift": "One No. per 1200 m2.",
+            "Compartmentalization": "Areas more than 500 m2 on individual floors must be segregated by fire-resistant walls.",
+            "Smoke Vent System": "Automatic system for visibility during emergencies.",
+            "Refuge Area": "To be provided at 24th meter level and every additional 15 meters."
+          },
+          "Additional Provisions": {
+            "Public Address System": "To be provided for announcements during emergencies.",
+            "Lightning Arrester": "To be provided.",
+            "Housekeeping": "Building must be maintained neat and clean.",
+            "Fire Drill": "To be conducted once per year; fire order should be prepared and kept ready."
+          }
+        }
+      },
+      {
+        "height": "Above 30 meters",
+        "subdivision": ["Hospitals, Sanatoria and Nursing Homes"],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor, depending upon the area and travel distance.",
+          "Hose Reel Assembly": "To be provided for all floors (per 1000 m2).",
+          "Wet Riser": "To be provided for all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "For the entire building including the basement.",
+          "Water Storage": {
+            "Terrace Tank": "20,000 liters.",
+            "Underground Tank": "100,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum 2 Nos, remote from each other, 2 meters width.",
+            "Fire Lift": "1 No. per 1200 m2.",
+            "Compartmentalization": "Area over 750 m2 to be segregated by fire-resistant walls.",
+            "Smoke Ventilation": "To be provided in basement and other covered areas.",
+            "Refuge Area": "To be provided at 24th meter level and every additional 15 meters."
+          },
+          "Additional Provisions": {
+            "Public Address System": "To be provided for announcements during emergencies.",
+            "Fire Drill": "To be conducted once per year; fire order to be prepared and kept ready.",
+            "Lightning Arrester": "To be provided.",
+            "Training": "Staff must be trained in fire fighting and evacuation procedures."
+          }
+        }
+      }
+    ]
+  },
+  "ASM": {
+    "buildingtype": "Assembly",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": ["Theatres, Cinemas, Exhibition Halls"],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per Floor.",
+          "Hose Reel Assembly": "Provided at all floors (Per 1000 m2).",
+          "Wet Riser": "Provided at all floors (Per 1000 m2).",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "To be installed in entire building.",
+          "Water Storage": {
+            "Underground Tank": "100,000 Liters.",
+            "Terrace Tank": "20,000 Liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2280 LPM and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum of 3 Nos., remote from each other, 2 meters wide.",
+            "Exit Signage": "Glow type with alternate power supply or battery backup.",
+            "Compartmentalization": "For area more than 750 m2, segregated by fire-resistant walls.",
+            "Evacuation Plan": "Displayed in prominent places.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once in 6 months."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Emergency Lights": "Required at staircase landings and exit routes."
+          }
+        }
+      },
+      {
+        "height": "15 to 30 meters",
+        "subdivision": [
+          "Buildings with over 1,000 persons seating capacity",
+          "Multiplexes"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per Floor.",
+          "Hose Reel Assembly": "Provided at all floors (Per 1000 m2).",
+          "Wet Riser": "Provided at all floors (Per 1000 m2).",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "To be installed in entire building.",
+          "Water Storage": {
+            "Underground Tank": "200,000 Liters.",
+            "Terrace Tank": "20,000 Liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2850 LPM and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum of 3 Nos., remote from each other, 2 meters wide.",
+            "Exit Signage": "Glow type with alternate power supply or battery backup.",
+            "Compartmentalization": "For area more than 750 m2, segregated by fire-resistant walls.",
+            "Evacuation Plan": "Displayed in prominent places.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once in 6 months."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Emergency Lights": "Required at staircase landings and exit routes."
+          }
+        }
+      },
+      {
+        "height": "Above 30 meters",
+        "subdivision": [
+          "Large Assembly Buildings, High-Rise Cinemas, Auditoriums"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per Floor.",
+          "Hose Reel Assembly": "Provided at all floors (Per 1000 m2).",
+          "Wet Riser": "Provided at all floors (Per 1000 m2).",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "To be installed in entire building.",
+          "Water Storage": {
+            "Underground Tank": "200,000 Liters.",
+            "Terrace Tank": "20,000 Liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2850 LPM and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircase": "Minimum of 3 Nos., remote from each other, 2 meters wide.",
+            "Exit Signage": "Glow type with alternate power supply or battery backup.",
+            "Compartmentalization": "For area more than 750 m2, segregated by fire-resistant walls.",
+            "Evacuation Plan": "Displayed in prominent places.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once in 6 months."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Emergency Lights": "Required at staircase landings and exit routes."
+          }
+        }
+      }
+    ]
+  },
+  "BUS": {
+    "buildingtype": "Business",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": ["Offices, Banks, Professional Establishments"],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided at all floors (per 1000 m2).",
+          "Wet Riser": "Provided at all floors (per 1000 m2).",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points (MCP) for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "Only for basement areas if the area exceeds 200 m2.",
+          "Water Storage": {
+            "Underground Tank": "50,000 liters.",
+            "Terrace Tank": "5,000 liters (add 5,000 liters if basement is sprinklered)."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump of each capacity 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "450 LPM (add 450 LPM if basement is sprinklered)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, 2 meters wide, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "To be provided for announcements during an emergency.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The building must be maintained clean and neat.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      },
+      {
+        "height": "15 to 24 meters",
+        "subdivision": ["Offices, Banks, Professional Establishments"],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Per 1000 m2.",
+          "Wet Riser": "Per 1000 m2.",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points (MCP) for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "To be installed in the entire building.",
+          "Water Storage": {
+            "Underground Tank": "75,000 liters.",
+            "Terrace Tank": "20,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, 2 meters wide, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "To be provided for announcements during an emergency.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The building must be maintained clean and neat.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      },
+      {
+        "height": "Above 24 meters",
+        "subdivision": [
+          "Offices, Banks, Professional Establishments",
+          "Laboratories, Research Institutions"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Per 1000 m2.",
+          "Wet Riser": "Per 1000 m2.",
+          "Yard Hydrant": "At all around the building.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Fire Alarm System": "Manually operated Fire Alarm Call Points (MCP) for each floor.",
+          "Automatic Detection and Alarm System": "For entire building.",
+          "Automatic Sprinkler System": "To be installed in the entire building.",
+          "Water Storage": {
+            "Underground Tank": "100,000 liters.",
+            "Terrace Tank": "20,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each capacity 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, 2 meters wide, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "To be provided for announcements during an emergency.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The building must be maintained clean and neat.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      }
+    ]
+  },
+  "MRC": {
+    "buildingtype": "Mercantile",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": [
+          "Shops, Stores, Departmental Stores, Markets with area up to 500 m2"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided at all floors (per 1000 m2).",
+          "Down Comer": "Provided at all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "Only for basement area if the area is more than 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "5,000 liters (+5,000 liters if basement is sprinklered).",
+            "Underground Tank": "50,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump, each 2280 LPM, plus 1 electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "450 LPM (if basement is sprinklered, then 900 LPM)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "To be displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The entire building should be maintained neat and clean.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      },
+      {
+        "height": "15 to 24 meters",
+        "subdivision": [
+          "Shops, Stores, Departmental Stores, Markets with area over 500 m2"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided at all floors (per 1000 m2).",
+          "Wet Riser": "Provided at all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "To be installed in the entire building.",
+          "Water Storage": {
+            "Terrace Tank": "10,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump, each 2280 LPM, plus 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "To be displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The entire building should be maintained neat and clean.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      },
+      {
+        "height": "Above 24 meters",
+        "subdivision": [
+          "Shops, Stores, Departmental Stores, Markets with large areas"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided at all floors (per 1000 m2).",
+          "Wet Riser": "Provided at all floors (per 1000 m2).",
+          "Automatic Sprinkler System": "To be installed in the entire building, including the basement.",
+          "Water Storage": {
+            "Terrace Tank": "20,000 liters.",
+            "Underground Tank": "100,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump, each 2280 LPM, plus 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type, with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Compartmentalization": "For areas over 750 m2, segregated by fire-resistant walls.",
+            "Public Address System": "For announcements during emergencies.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "To be displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The entire building should be maintained neat and clean.",
+            "Lightning Arrester": "To be provided.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      }
+    ]
+  },
+  "IND": {
+    "buildingtype": "Industrial",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": [
+          "Low Hazard Industries like Service Stations, Engineering Workshops, Tanneries"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Per 1000 m2.",
+          "Automatic Sprinkler System": "Only for basement areas exceeding 200 m2.",
+          "Water Storage": {
+            "Terrace Tank": "5,000 liters (+5,000 liters if basement is sprinklered).",
+            "Underground Tank": "50,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "1 electric and 1 diesel pump of each 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "450 LPM."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Public Address System": "Required for emergency announcements.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      },
+      {
+        "height": "15 to 24 meters",
+        "subdivision": [
+          "Moderate Hazard Industries like Bakeries, Coir Factories, Cable Manufacturing"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Per 1000 m2.",
+          "Automatic Sprinkler System": "Installed in the entire building.",
+          "Water Storage": {
+            "Terrace Tank": "10,000 liters.",
+            "Underground Tank": "75,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Public Address System": "Required for emergency announcements.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Lightning Arrester": "Mandatory."
+          }
+        }
+      },
+      {
+        "height": "Above 24 meters",
+        "subdivision": [
+          "High Hazard Industries like Chemical Plants, Bulk Storage of Flammable Liquids"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 4 Nos per floor.",
+          "Hose Reel Assembly": "Per 500 m2.",
+          "Wet Riser System": "Per 500 m2.",
+          "Yard Hydrants": "At all around the building at 30 meters intervals.",
+          "Fire Service Inlets": "Provided at ground level.",
+          "Automatic Sprinkler System": "Installed in the entire building.",
+          "Water Storage": {
+            "Underground Tank": "100,000 liters.",
+            "Terrace Tank": "20,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "2 electric and 1 diesel pump of each 2280 LPM, and 1 electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "900 LPM."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Public Address System": "Required for emergency announcements.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places.",
+            "Compartmentalization": "Area more than 750 m2 on individual floors shall be segregated by fire-resistant walls.",
+            "Means of Escape": "Staircases should be pressurized to prevent smoke spread during evacuation."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "Building must be maintained clean and neat.",
+            "Lightning Arrester": "Mandatory.",
+            "Fire Lift": "1 No. per 1200 m2 with provision for evacuation.",
+            "Training": "Staff should be trained in preliminary firefighting and evacuation management."
+          }
+        }
+      }
+    ]
+  },
+  "STR": {
+    "buildingtype": "Storage",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": [
+          "Cold Storage, Freight Depots, Storehouses, Garages, etc."
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided per 500 m2.",
+          "Automatic Sprinkler System": "Provided for the entire building.",
+          "Water Storage": {
+            "Underground Tank": "25,000 liters.",
+            "Terrace Tank": "5,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "One electric and a diesel pump, each 1620 LPM, and one electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "450 LPM."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Public Address System": "Required for emergency announcements.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The building must be maintained clean and neat.",
+            "Lightning Arrester": "Mandatory.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      },
+      {
+        "height": "Above 15 meters",
+        "subdivision": [
+          "Cold Storage, Freight Depots, Storehouses, Garages, etc."
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided per 500 m2.",
+          "Wet Riser System": "Provided per 500 m2.",
+          "Yard Hydrant": "Provided all around the building.",
+          "Automatic Sprinkler System": "Provided for the entire building.",
+          "Automatic Detection and Alarm System": "For the entire building.",
+          "Water Storage": {
+            "Underground Tank": "50,000 liters for ground floor only, 75,000 liters for ground + one floor.",
+            "Terrace Tank": "10,000 liters."
+          },
+          "Fire Pumps": {
+            "Ground Level": "One electric and a diesel pump, each 2280 LPM, and one electric pump of 180 LPM (Jockey Pump).",
+            "Terrace Level": "450 LPM."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type with battery backup or alternate power supply.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Public Address System": "Required for emergency announcements.",
+            "Fire Drill": "To be conducted once every 6 months.",
+            "Evacuation Route Plan": "Displayed at prominent places."
+          },
+          "Additional Provisions": {
+            "Housekeeping": "The building must be maintained clean and neat.",
+            "Lightning Arrester": "Mandatory.",
+            "Assembly Point": "Designated at the ground floor for occupants of each floor."
+          }
+        }
+      }
+    ]
+  },
+  "HAZ": {
+    "buildingtype": "Hazardous",
+    "categories": [
+      {
+        "height": "Up to 15 meters",
+        "subdivision": [
+          "Storage, Handling, Manufacture or Processing of highly combustible or explosive materials"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 2 Nos per floor.",
+          "Hose Reel Assembly": "Provided (Per 500 m2).",
+          "Yard Hydrant": "All around the building.",
+          "Manual operated Fire Alarm Call Points (MCP)": "Provided on each floor.",
+          "Automatic Sprinkler System": "Provided for the entire building.",
+          "Automatic Detection and Alarm System": "Provided for the entire building.",
+          "Water Storage": {
+            "Underground Tank": "Minimum 4 hours fire fighting requirements.",
+            "Terrace Tank": "50,000 liters."
+          },
+          "Fire Pumps": "Pump capacity based on covered area of the building.",
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type (with alternate power supply or battery backup).",
+            "Housekeeping": "The entire building should be maintained neat and clean.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Lighting Arrester": "Should be provided.",
+            "Public Address System": "Should be provided for announcements during an emergency.",
+            "Do's and Don'ts laminated pads": "Should be available on all floors in prominent places.",
+            "Assembly Point": "Assembly points should be designated at the ground floor for each floor's occupants.",
+            "Fire Drill and Fire Order": "Fire drills should be conducted once in 6 months, and fire orders should be prepared and kept ready.",
+            "Evacuation Route Plan": "This plan should be displayed in prominent places.",
+            "Means of Escape and Exit": "Minimum 2 Nos."
+          }
+        }
+      },
+      {
+        "height": "Above 15 meters",
+        "subdivision": [
+          "Hazardous buildings involving chemicals, highly toxic materials"
+        ],
+        "norms": {
+          "Fire Extinguishers": "Minimum 4 Nos per floor.",
+          "Hose Reel Assembly": "Provided (Per 500 m2).",
+          "Wet Riser System": "Provided (Per 500 m2).",
+          "Yard Hydrant": "All around the building at 30-meter intervals.",
+          "Manual operated Fire Alarm Call Points (MCP)": "Near exit doors.",
+          "Automatic Sprinkler System": "Provided for the entire building.",
+          "Automatic Detection and Alarm System": "Provided for the entire building.",
+          "Water Storage": {
+            "Underground Tank": "At least 75,000 liters for built-up areas up to 500 m2.",
+            "Terrace Tank": "10,000 liters (20,000 liters for areas above 500 m2)."
+          },
+          "Fire Pumps": {
+            "Ground Level": "One electric and one diesel pump of 2280 LPM each, with a jockey pump of 180 LPM.",
+            "Terrace Level": "450 LPM (900 LPM for larger areas)."
+          },
+          "Life Safety": {
+            "Staircases": "Minimum 2 Nos, remote from each other.",
+            "Exit Signage": "Glow type (with battery backup or alternate power supply).",
+            "Housekeeping": "The entire building should be maintained neat and clean.",
+            "Emergency Lights": "At staircase landing and exit routes.",
+            "Lighting Arrester": "Should be provided.",
+            "Public Address System": "Should be provided for emergency announcements.",
+            "Do's and Don'ts laminated pads": "Should be displayed in prominent places.",
+            "Assembly Point": "Designated assembly points at ground floor for occupants of each floor.",
+            "Fire Drill and Fire Order": "Fire drills should be conducted every 6 months, with fire orders prepared and kept ready.",
+            "Evacuation Route Plan": "Displayed in prominent places.",
+            "Means of Escape and Exit": "Minimum 2 Nos, remote from each other.",
+            "Smoke and Fire Vents": "Provided at suitable locations with adequate designs.",
+            "Roof Screens / Curtain Boards": "To prevent lateral spread of smoke and heat, installed at 30-meter intervals.",
+            "Explosion Relief Vents": "To be provided at suitable places where applicable."
+          }
+        }
+      }
+    ]
+  }
+}
