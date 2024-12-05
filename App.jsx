@@ -12,6 +12,7 @@ import Scan from './components/Scan';
 import PushNotification from 'react-native-push-notification';
 import Norms from './components/Norms';
 import FinalPage from './components/FinalPage';
+import LottiePage from './components/complete';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -103,6 +104,7 @@ const App = () => {
           <Stack.Screen name="Scan" component={Scan} />
           <Stack.Screen name='norms' component={Norms} />
           <Stack.Screen name='final' component={FinalPage} />
+          <Stack.Screen name='lottie' component={LottiePage} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

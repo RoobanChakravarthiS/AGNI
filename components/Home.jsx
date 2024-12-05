@@ -12,6 +12,8 @@ const LeftContent = props => (
   />
 );
 const Home = ({navigation}) => {
+
+  
   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
   const events = [
     {

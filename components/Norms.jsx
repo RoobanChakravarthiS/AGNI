@@ -33,6 +33,7 @@ const Norms = ({navigation, route}) => {
   };
 
   const handleImageUpload = key => {
+    console.log(key)
     launchCamera({mediaType: 'photo'}, async response => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
@@ -44,9 +45,10 @@ const Norms = ({navigation, route}) => {
         const {uri, fileName, type} = response.assets[0];
         setPhoto(prevPhoto => {
           const newPhoto = {...prevPhoto, [key]: {uri, type, fileName}};
-          // Update userResponses with the uploaded media
+          console.log("idhu dhaan da thaileee key",key)
           setUserResponses(prevResponses => ({
             ...prevResponses,
+            
             [key]: {...prevResponses[key], Photo: newPhoto[key]},
           }));
           return newPhoto;
@@ -167,8 +169,11 @@ const Norms = ({navigation, route}) => {
   };
 
   const renderObjectItem = ({item, index, parentKey}) => {
-    // console.log(item)
-    const key = item[1]; // Unique key for child collapsible
+    // console.log(item[1])
+    const key = item[0];
+    // console.log(key)
+
+     // Unique key for child collapsible
     return (
       <View style={styles.cardContainer}>
         <Card
@@ -213,24 +218,17 @@ const Norms = ({navigation, route}) => {
             <Card.Actions style={styles.cardActions}>
               <Button
                 style={styles.iconButton}
-                onPress={key => handleImageUpload(key)}>
+                onPress={() => handleImageUpload(key)}>
                 <Image
                   source={require('../assets/picture.png')}
                   style={styles.icon}
                 />
               </Button>
-              <Button
-                style={styles.iconButton}
-                onPress={() => toggleRemarkCollapse(key)}>
-                <Image
-                  source={require('../assets/journal-alt.png')}
-                  style={styles.icon}
-                />
-              </Button>
+              
 
               <Button
                 style={styles.iconButton}
-                onPress={key => {
+                onPress={() => {
                   handleMediaUpload(key);
                 }}>
                 <Image
@@ -240,23 +238,7 @@ const Norms = ({navigation, route}) => {
               </Button>
             </Card.Actions>
 
-            <Collapsible collapsed={remarkCollapsedState[key]}>
-              <TextInput
-                label="Remark"
-                mode="flat"
-                style={styles.textInput}
-                onChangeText={text => handleRemark(key, text)}
-                value={remarks[key]}
-                theme={{
-                  colors: {
-                    primary: '#ff8400',
-                    placeholder: '#2b2e36',
-                    text: '#2b2e36',
-                    background: 'transparent',
-                  },
-                }}
-              />
-            </Collapsible>
+            
           </Card>
         </Collapsible>
       </View>
@@ -278,7 +260,7 @@ const Norms = ({navigation, route}) => {
   };
 
   const renderItem = ({item, index}) => {
-    const key = item[1];
+    const key = item[0];
     return typeof item[1] === 'string' ? (
       <View style={styles.cardContainer}>
         <Card
@@ -324,24 +306,17 @@ const Norms = ({navigation, route}) => {
             <Card.Actions style={styles.cardActions}>
               <Button
                 style={styles.iconButton}
-                onPress={key => handleImageUpload(key)}>
+                onPress={() => handleImageUpload(key)}>
                 <Image
                   source={require('../assets/picture.png')}
                   style={styles.icon}
                 />
               </Button>
-              <Button
-                style={styles.iconButton}
-                onPress={() => toggleRemarkCollapse(key)}>
-                <Image
-                  source={require('../assets/journal-alt.png')}
-                  style={styles.icon}
-                />
-              </Button>
+              
 
               <Button
                 style={styles.iconButton}
-                onPress={key => {
+                onPress={() => {
                   handleMediaUpload(key);
                 }}>
                 <Image
@@ -350,23 +325,7 @@ const Norms = ({navigation, route}) => {
                 />
               </Button>
             </Card.Actions>
-            <Collapsible collapsed={remarkCollapsedState[key]}>
-              <TextInput
-                label="Remark"
-                mode="flat"
-                style={styles.textInput}
-                onChangeText={text => handleRemark(key, text)}
-                value={remarks[key]}
-                theme={{
-                  colors: {
-                    primary: '#ff8400',
-                    placeholder: '#2b2e36',
-                    text: '#2b2e36',
-                    background: 'transparent',
-                  },
-                }}
-              />
-            </Collapsible>
+            
           </Card>
         </Collapsible>
       </View>
@@ -406,7 +365,10 @@ const Norms = ({navigation, route}) => {
         <View style={styles.buttonContainer}>
           <Button
             mode="contained"
-            onPress={() => navigation.navigate('final', userResponses)}
+            onPress={() => {
+              navigation.navigate('final', userResponses)
+              // console.log(userResponses)
+              }}
             style={[styles.button, styles.endButton]}>
             <Text style={styles.buttonText}>End </Text>
           </Button>
