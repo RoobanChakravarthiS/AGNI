@@ -16,16 +16,16 @@ const Login = ({navigation}) => {
   const buttonColor = '#ff8400';
 
   const ToastConfig = {
-    success: ({text1, text2}) => (
-      <View style={[styles.toastContainer, styles.successToast]}>
-        <Text style={styles.toastTitle}>{text1}</Text>
-        {text2 ? <Text style={styles.toastMessage}>{text2}</Text> : null}
+    success: internalState => (
+      <View style={styles.toastSuccess}>
+        <Text style={styles.toastText}>{internalState.text1}</Text>
+        <Text style={styles.toastSubText}>{internalState.text2}</Text>
       </View>
     ),
-    error: ({text1, text2}) => (
-      <View style={[styles.toastContainer, styles.errorToast]}>
-        <Text style={styles.toastTitle}>{text1}</Text>
-        {text2 ? <Text style={styles.toastMessage}>{text2}</Text> : null}
+    error: internalState => (
+      <View style={styles.toastError}>
+        <Text style={styles.toastText}>{internalState.text1}</Text>
+        <Text style={styles.toastSubText}>{internalState.text2}</Text>
       </View>
     ),
     info: ({text1, text2}) => (
@@ -47,7 +47,7 @@ const Login = ({navigation}) => {
     setErrors({username: false, password: false});
 
     try {
-      const res = await axios.post(`http://192.168.3.154:1703/login`, {
+      const res = await axios.post(`http://192.168.3.154:1111/login`, {
         username,
         password,
       });
@@ -59,8 +59,17 @@ const Login = ({navigation}) => {
         await EncryptedStorage.setItem('officer_pin', officer_pin);
         Toast.show({
           type: 'success',
-          text1: 'Welcome!',
-          text2: 'Login Successful 🎉',
+          text1: 'Login Successful',
+          text2: 'You will be redirected shortly...',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          props: {
+            style: styles.toastSuccess,
+            text1Style: styles.toastText,
+            text2Style: styles.toastSubText,
+          },
         });
         // console.log('Login Successful:', { token, userid, officer_pin });
         setTimeout(() => navigation.navigate('BottomTab'), 2000);
@@ -71,12 +80,30 @@ const Login = ({navigation}) => {
           type: 'error',
           text1: 'Invalid Credentials',
           text2: 'Please check your username and password.',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          props: {
+            style: styles.toastError,
+            text1Style: styles.toastText,
+            text2Style: styles.toastSubText,
+          },
         });
       } else {
         Toast.show({
           type: 'error',
           text1: 'Oops!',
           text2: 'Something went wrong. Please try again.',
+          position: 'top',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          props: {
+            style: styles.toastError,
+            text1Style: styles.toastText,
+            text2Style: styles.toastSubText,
+          },
         });
       }
       console.error('Login Error:', error.message || error.response?.data);
@@ -85,10 +112,10 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-    <Toast config={ToastConfig}/>
-      <View style={styles.welcomeContainer}>
+      <Toast config={ToastConfig} />
+      {/* <View style={styles.welcomeContainer}>
         <Image style={styles.logo} source={require('../assets/logo.jpg')} />
-      </View>
+      </View> */}
       <View style={styles.form}>
         <Text variant="titleLarge" style={styles.title}>
           Login
@@ -193,6 +220,7 @@ const styles = StyleSheet.create({
     padding: 14,
     backgroundColor: '#fff',
     alignItems: 'center',
+    justifyContent:'center'
   },
   toastContainer: {
     padding: 16,
@@ -201,7 +229,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     shadowColor: '#000',
     shadowOpacity: 0.3,
-    shadowOffset: { width: 0, height: 5 },
+    shadowOffset: {width: 0, height: 5},
     shadowRadius: 10,
     elevation: 10,
   },
@@ -294,5 +322,26 @@ const styles = StyleSheet.create({
   logo: {
     width: 180,
     height: 180,
+  },
+  toastSuccess: {
+    backgroundColor: '#4CAF50', // Green for success toast
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  toastError: {
+    backgroundColor: '#F44336', // Red for error toast
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  toastText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  toastSubText: {
+    color: 'white',
+    fontSize: 14,
   },
 });

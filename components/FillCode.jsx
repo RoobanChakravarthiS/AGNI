@@ -8,10 +8,11 @@ const FillCode = ({navigation}) => {
   const [error, setError] = useState(null);
   const [focusedField, setFocusedField] = useState(null);
   const url = `http://192.168.3.154:1111`;
-  const user = EncryptedStorage.getItem('userid');
   const updatePin = async () => {
+      const user = await EncryptedStorage.getItem('userid');
+    console.log(user)
     try {
-      const res = await axios.post(`${url}/officer/updatepin/${user}`, {
+      const res = await axios.put(`${url}/officer/updatepin/${user}`,{
         pin: code,
       });
       if (res.status === 200) {

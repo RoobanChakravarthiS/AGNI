@@ -11,13 +11,14 @@ import {
   Alert
 } from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { Modal } from 'react-native-paper';
+import { Modal ,Button } from 'react-native-paper';
 import Video from 'react-native-video';
 
-const FinalPage = ({ navigation, route }) => {
-  const data = route.params || {};
-  console.log(data);
 
+const FinalPage = ({ navigation, route }) => {
+  // const data = route.params || {};
+  // console.log(data);
+  const [data, setData] = useState(route.params || {});
   // State to hold the remarks
   const [remarks, setRemarks] = useState({});
   const [visibleMedia, setVisibleMedia] = useState({}); // To control the media visibility
@@ -29,23 +30,7 @@ const FinalPage = ({ navigation, route }) => {
   const [focusedField, setFocusedField] = useState(null);
   const url =`http://192.168.3.154:1111`
   // Convert object to array format for FlatList
-  const dataArray = Object.entries(data).map(([key, value]) => {
-    if (typeof value === 'object' && value !== null) {
-      return {
-        key, // Norm description
-        value: Object.values(value).filter((v) => typeof v === 'string').join('') || 'N/A', // Concatenate string responses (if any)
-        photo: value.Photo || null, // Extract Photo (if available)
-        video: value.video || null, // Extract Video (if available)
-      };
-    } else {
-      return {
-        key, // Norm description
-        value: value || 'N/A', // Response (Yes/No or N/A)
-        media: null, // No media for primitive values
-        remark: '', // No remark for primitive values
-      };
-    }
-  });
+  const dataArray = Object.entries(data)
 
   // Handle Show Media button
   const toggleMediaVisibility = (key) => {
@@ -62,18 +47,33 @@ const FinalPage = ({ navigation, route }) => {
       [key]: !prev[key],
     }));
   };
+ 
 
   // Save remark for a specific key
   const handleSaveRemark = (key, text) => {
-    setRemarks((prev) => ({
-      ...prev,
-      [key]: text,
+    // Update the data for the specific key with the new remark
+    setData(prevData => ({
+      ...prevData,
+      [key]: {
+        ...prevData[key],
+        remark: text, // Save the remark to the correct item
+      },
     }));
-    toggleRemarkInputVisibility(key); // Close the remark input after saving
+  
+    // Close the remark input
+    // toggleRemarkInputVisibility(key);
   };
+  
+  const saveRemark = ()=>{
+    setVisibleRemarkInput(!visibleRemarkInput)
+  }
 
   // Handle Recommend/Don't Recommend buttons (Final Submit)
   const handleRecommendation = (recommendationType) => {
+    setData(prevData => ({
+      ...prevData,
+      Recommendation:recommendationType
+    }));
     setRecommendation(recommendationType);
   };
 
@@ -88,9 +88,10 @@ const FinalPage = ({ navigation, route }) => {
   };
 
 
-  const checkCode = () =>{
-    const code = EncryptedStorage.getItem('code')
+  const checkCode = async () =>{
+    const code = await EncryptedStorage.getItem('code')
     if(secretCode === code){
+      console.log(data)
       handleSubmitCase()
     }
     else{
@@ -108,52 +109,36 @@ const FinalPage = ({ navigation, route }) => {
       {/* Render the list of norms */}
       <FlatList
         data={dataArray}
-        keyExtractor={(item, index) => `${item.key}-${index}`}
+        keyExtractor={(item, index) => `${item[0]}-${index}`}
         renderItem={({ item }) => (
           <View style={styles.itemContainer}>
-            <Text style={styles.normText}>{item.key}</Text>
+            <Text style={styles.normText}>{item[0]}</Text>
             <Text
-              style={[styles.responseText, item.value === 'Yes' ? styles.yesText : styles.noText]}
+              style={[styles.responseText, item[1].availability === 'Yes' ? styles.yesText : styles.noText]}
             >
-              {item.value}
+              {item[1].availability}
             </Text>
 
-            {/* Display remark if available */}
-            {remarks[item.key] ? (
-              <View style={styles.remarkContainer}>
-                <Text style={styles.remarkTitle}>Remark:</Text>
-                <Text style={styles.remarkText}>{remarks[item.key]}</Text>
-              </View>
-            ) : null}
-
             {/* Show Media Button */}
-            {(item.photo || item.video) && (
+            {(item[1].photo) && (
               <TouchableOpacity
                 style={styles.mediaButton}
-                onPress={() => toggleMediaVisibility(item.key)}
+                onPress={() => toggleMediaVisibility(item[0])}
               >
                 <Text style={styles.mediaButtonText}>
-                  {visibleMedia[item.key] ? 'Hide Media' : 'Show Media'}
+                  {visibleMedia[item[0]] ? 'Hide Media' : 'Show Media'}
                 </Text>
               </TouchableOpacity>
             )}
 
             {/* Display media (image or video) if it's visible */}
-            {visibleMedia[item.key] && (
+            {visibleMedia[item[0]] && (
               <View style={styles.mediaContainer}>
-                {item.photo && (
+                {item[1].photo && (
                   <Image
-                    source={{ uri: item.photo.uri }} // Show image from uri
+                    source={{ uri: item[1].photo.uri }} // Show image from uri
                     style={styles.mediaThumbnail}
                     resizeMode="cover"
-                  />
-                )}
-                {item.video && (
-                  <Video
-                    source={{ uri: item.video.uri }} // Show video from uri
-                    style={styles.mediaThumbnail}
-                    resizeMode="cover"
-                    controls // Add controls for the video player
                   />
                 )}
               </View>
@@ -162,24 +147,24 @@ const FinalPage = ({ navigation, route }) => {
             {/* Add Remark Button */}
             <TouchableOpacity
               style={styles.addRemarkButton}
-              onPress={() => toggleRemarkInputVisibility(item.key)}
+              onPress={() => toggleRemarkInputVisibility(item[0])}
             >
               <Text style={styles.addRemarkText}>Add Remark</Text>
             </TouchableOpacity>
 
             {/* Collapsible Remark Input Field */}
-            {visibleRemarkInput[item.key] && (
+            {visibleRemarkInput[item[0]] && (
               <View style={styles.remarkInputContainer}>
                 <TextInput
                   style={styles.remarkInput}
                   placeholder="Enter your remark"
                   multiline
-                  onChangeText={(text) => handleSaveRemark(item.key, text)}
-                  value={remarks[item.key] || ''}
+                  onChangeText={(text) => handleSaveRemark(item[0], text)}
+                  value={item[1].remark || ''}
                 />
                 <TouchableOpacity
                   style={styles.saveRemarkButton}
-                  onPress={() => handleSaveRemark(item.key, remarks[item.key])}
+                  onPress={() => saveRemark()}
                 >
                   <Text style={styles.saveRemarkText}>Save Remark</Text>
                 </TouchableOpacity>
@@ -231,7 +216,7 @@ const FinalPage = ({ navigation, route }) => {
       <Text style={styles.label}>Enter the Secret Code</Text>
       <TextInput
         label="Secret Code"
-        value={code}
+        value={secretCode}
         mode="flat"
         style={[
           styles.textInput,
@@ -307,23 +292,6 @@ const styles = StyleSheet.create({
   },
   noText: {
     color: 'red',
-  },
-  remarkContainer: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#f1f1f1',
-    borderRadius: 8,
-  },
-  remarkTitle: {
-    fontSize: 14,
-    fontFamily: 'DMSans Bold',
-    color: '#2b2e36',
-  },
-  remarkText: {
-    fontSize: 14,
-    fontFamily: 'DMSans Regular',
-    color: '#2b2e36',
-    marginTop: 5,
   },
   mediaButton: {
     marginTop: 10,
@@ -422,5 +390,79 @@ const styles = StyleSheet.create({
     backgroundColor: '#ff8400',
     borderRadius: 5,
     alignItems: 'center',
+  },
+
+  // Modal Container
+  modalstyles: {
+    backgroundColor: '#fff',
+    padding: 25,
+    borderRadius: 15,
+    width: '80%',
+    height:'50%',
+    alignSelf: 'center',
+    // marginTop: '30%',
+    elevation: 10, // Adds shadow for a modern look
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+  },
+
+  // Label Text
+  label: {
+    fontSize: 18,
+    fontFamily: 'DMSans Bold',
+    color: '#2b2e36',
+    marginBottom: 15,
+    textAlign: 'left', // Aligned to the left for clarity
+  },
+
+  // Text Input for Secret Code
+  textInput: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 10,
+    paddingLeft: 15,
+    fontFamily: 'DM Sans Regular',
+    fontSize: 16,
+    color: '#2b2e36',
+    backgroundColor: '#f8f8f8',
+    marginBottom: 20,
+    width: '100%',
+  },
+
+  // Focused Text Input
+  focusedTextInput: {
+    borderColor: '#ff8400', // Color when the input is focused
+  },
+
+  // Error Styling for Input
+  errorInput: {
+    borderColor: '#e74c3c', // Red border color for errors
+  },
+
+  // Error Text
+  errorText: {
+    color: '#e74c3c',
+    fontSize: 14,
+    fontFamily: 'DM Sans Regular',
+    marginBottom: 10,
+    textAlign: 'left',
+  },
+
+  // Submit Button Style
+  submitButton: {
+    backgroundColor: '#ff8400',
+    paddingVertical: 12,
+    borderRadius: 10,
+    marginTop: 15,
+    alignItems: 'center',
+  },
+
+  // Button Text Style
+  buttonLabel: {
+    color: '#fff',
+    fontFamily: 'DMSans Bold',
+    fontSize: 16,
   },
 });

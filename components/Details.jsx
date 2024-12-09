@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-nati
 
 const Details = ({ route, navigation }) => {
   const data = route.params;
+
+
   // console.log(data)
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -10,43 +12,43 @@ const Details = ({ route, navigation }) => {
         {/* Building Name */}
         <View style={[styles.section, styles.largeSection]}>
           <Text style={styles.sectionTitle}>Building Name</Text>
-          <Text style={styles.sectionValue}>{data.details.ApplicationDetail.BuildingName}</Text>
+          <Text style={styles.sectionValue}>{data.formdata["Application Details"]["Building and address details"]["Building Name"]}</Text>
         </View>
 
         {/* Applicant Information */}
         <View style={[styles.section, styles.mediumSection]}>
           <Text style={styles.sectionTitle}>Applicant Information</Text>
-          <Text style={styles.sectionValue}>Name: {data.details.ApplicationDetail.ApplicantName}</Text>
-          <Text style={styles.sectionValue}>Mobile: {data.details.ApplicationDetail.MobileNumber}</Text>
-          <Text style={styles.sectionValue}>Email: {data.details.ApplicationDetail.Mail}</Text>
+          <Text style={styles.sectionValue}>Name: {data.formdata["Application Details"]["Building and address details"]["Applicant Name"]}</Text>
+          <Text style={styles.sectionValue}>Mobile: {data.formdata["Application Details"]["Contact Details"]["Mobile Number"]}</Text>
+          <Text style={styles.sectionValue}>Email: {data.formdata["Application Details"]["Contact Details"]["Email ID"]}</Text>
         </View>
 
         {/* Address */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Address</Text>
-          <Text style={styles.sectionValue}>{data.address}</Text>
+          <Text style={styles.sectionValue}>{`${data.formdata["Application Details"]["Building and address details"]["Door / Flat No."]}, ${data.formdata["Application Details"]["Building and address details"]["Street No. / Name"]}, ${data.formdata["Application Details"]["Building and address details"]["Revenue Village"]}`}</Text>
           <Text style={styles.sectionValue}>
-            State: {data.details.ApplicationDetail.State}, District: {data.details.ApplicationDetail.District}, Taluk: {data.details.ApplicationDetail.Taluk}, Pincode: {data.details.ApplicationDetail.Pincode}
+            State: {data.formdata["Application Details"]["Building and address details"].State}, District: {data.formdata["Application Details"]["Building and address details"].District}, Taluk: {data.formdata["Application Details"]["Building and address details"].Taluk}, Pincode: {data.formdata["Application Details"]["Building and address details"].Pincode}
           </Text>
         </View>
 
         {/* Building Details */}
         <View style={[styles.section, styles.mediumSection]}>
           <Text style={styles.sectionTitle}>Building Details</Text>
-          <Text style={styles.sectionValue}>Type: {data.details.ApplicationDetail.TypeOfOccupancy}</Text>
-          <Text style={styles.sectionValue}>Height: {data.details.ApplicationDetail.BuildingHeight}</Text>
-          <Text style={styles.sectionValue}>Entrance Width: {data.details.ApplicationDetail.EntranceWidth}</Text>
-          <Text style={styles.sectionValue}>Entrance Height: {data.details.ApplicationDetail.EntranceHeight}</Text>
-          <Text style={styles.sectionValue}>Approach Road Width: {data.details.ApplicationDetail.ApproachRoadWidth}</Text>
+          <Text style={styles.sectionValue}>Type: {data.formdata["Application Details"]["General Particulars"]["Type of Occupancy"]}</Text>
+          <Text style={styles.sectionValue}>Height: {data.formdata["Application Details"]["General Particulars"]["Height of the Building (m)"]}</Text>
+          <Text style={styles.sectionValue}>Entrance Width: {data.formdata["Application Details"]["General Particulars"]["Entrance Width (m)"]}</Text>
+          <Text style={styles.sectionValue}>Entrance Height: {data.formdata["Application Details"]["General Particulars"]["Entrance Height (m)"]}</Text>
+          <Text style={styles.sectionValue}>Approach Road Width: {data.formdata["Application Details"]["General Particulars"]["Approach Road Width (m)"]}</Text>
         </View>
 
         {/* Setbacks */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Setbacks</Text>
-          <Text style={styles.sectionValue}>North: {data.details.ApplicationDetail.Setbacks.North}</Text>
-          <Text style={styles.sectionValue}>South: {data.details.ApplicationDetail.Setbacks.South}</Text>
-          <Text style={styles.sectionValue}>East: {data.details.ApplicationDetail.Setbacks.East}</Text>
-          <Text style={styles.sectionValue}>West: {data.details.ApplicationDetail.Setbacks.West}</Text>
+          <Text style={styles.sectionValue}>North: {data.formdata["Application Details"]["Set Back All Around the Building on Four Directions"]["North (m)"]}</Text>
+          <Text style={styles.sectionValue}>South: {data.formdata["Application Details"]["Set Back All Around the Building on Four Directions"]["South (m)"]}</Text>
+          <Text style={styles.sectionValue}>East: {data.formdata["Application Details"]["Set Back All Around the Building on Four Directions"]["East (m)"]}</Text>
+          <Text style={styles.sectionValue}>West: {data.formdata["Application Details"]["Set Back All Around the Building on Four Directions"]["West (m)"]}</Text>
         </View>
       </View>
 

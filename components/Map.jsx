@@ -4,12 +4,14 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geolocation from '@react-native-community/geolocation';
 
-const Map = () => {
+const Map = ({route}) => {
+  const destination = route.params
+
   const [origin, setOrigin] = useState({
     latitude: null,
     longitude: null,
   });
-  const destination = {latitude: 10.931908, longitude: 76.21343};
+  // const destination = {latitude: 10.931908, longitude: 76.21343};
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCyZYuKJc4YREy3ppZxlnODX_HL7sJlAbk';
 
   useEffect(() => {

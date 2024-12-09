@@ -1,13 +1,11 @@
 import {Alert, FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import data from './norms.json';
 import Collapsible from 'react-native-collapsible';
 import {Button, Card, Modal} from 'react-native-paper';
 import {launchCamera} from 'react-native-image-picker';
-import {TextInput} from 'react-native-paper';
 import axios from 'axios';
+import LottieView from 'lottie-react-native';
 const Norms = ({navigation, route}) => {
-  console.log(route.params);
   const code = route.params || 'RES-123456';
   const [norms, setNorms] = useState([]);
   const [remarks, setRemarks] = useState({});
@@ -19,21 +17,26 @@ const Norms = ({navigation, route}) => {
   // let height;
   const [isVisible, setIsVisible] = useState(false);
   const [remarkCollapsedState, setRemarkCollapsedState] = useState({});
+  const [loading,setLoading] = useState(true)
 
-  const url = `http://192.168.3.154:1703`;
+  const url = `http://192.168.3.154:1111`;
   const [height, setHeight] = useState(0);
-
   const fetchApplicaitonDetails = async () => {
     try {
       const res = await axios.get(`${url}/application/${code}`);
       if (res.status === 200) {
-        setHeight(res.data.details.ApplicationDetails.height);
+        setHeight(
+          res.data.data[0].formdata['Application Details'][
+            'General Particulars'
+          ]['Height of the Building (m)'],
+        );
+        // console.log('Application details : ',res.data)
       }
+      console.log('height', height);
     } catch (err) {
       console.log(err);
     }
   };
-
   const [remark, setRemark] = useState();
   const findCategory = type => {
     switch (type) {
@@ -79,26 +82,22 @@ const Norms = ({navigation, route}) => {
   };
 
   const handleImageUpload = key => {
-    console.log(key);
     launchCamera({mediaType: 'photo'}, async response => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
-        Alert('Media selection was cancelled');
+        Alert.alert('Media selection was cancelled');
       } else if (response.errorMessage) {
         console.log(response.errorMessage);
-        Alert('An error occurred, try again');
+        Alert.alert('An error occurred, try again');
       } else if (response.assets) {
         const {uri, fileName, type} = response.assets[0];
-        setPhoto(prevPhoto => {
-          const newPhoto = {...prevPhoto, [key]: {uri, type, fileName}};
-          console.log('idhu dhaan da thaileee key', key);
-          setUserResponses(prevResponses => ({
-            ...prevResponses,
-
-            [key]: {...prevResponses[key], Photo: newPhoto[key]},
-          }));
-          return newPhoto;
-        });
+        setUserResponses(prevState => ({
+          ...prevState,
+          [key]: {
+            ...prevState[key],
+            photo: {uri, type, fileName}, // Update the photo field
+          },
+        }));
       }
     });
   };
@@ -126,38 +125,34 @@ const Norms = ({navigation, route}) => {
     });
   };
 
-  const toggleRemarkCollapse = key => {
-    setRemarkCollapsedState(prevState => {
-      const newState = {...prevState};
-      newState[key] = !newState[key]; // Toggle the selected key for remarks
-      return newState;
-    });
-  };
-
-  // Handle remarks input and store in userResponses
-  const handleRemark = (key, remark) => {
-    setRemarks(prevRemarks => ({
-      ...prevRemarks,
-      [key]: remark,
-    }));
-
-    // Update userResponses with the submitted remark
-    setUserResponses(prevResponses => ({
-      ...prevResponses,
-      [key]: {...prevResponses[key], remark: remark},
-    }));
-  };
-
   const fetchNorms = async () => {
     try {
       const categoryIndex = findCategory(code.substring(0, 3));
       const res = await axios.get(
-        `${url}/norms/${code}?index=${categoryIndex}`,
+        `${url}/norms/${code.substring(0, 3)}?index=${categoryIndex}`,
       );
       if (res.status === 200) {
-        setNorms(res.data);
+        const newData = Object.entries(res.data);
+        setNorms(newData);
+
+        const initialResponses = newData.reduce((acc, [key, value]) => {
+          if (typeof value === 'object' && value !== null) {
+            Object.keys(value).forEach(innerKey => {
+              acc[innerKey] = { availability: null, photo: null ,remark:'' };
+            });}
+            else{
+
+              acc[key] = { availability: null, photo: null ,remark:''};
+            }
+          return acc;
+        }, {});
+        setUserResponses(initialResponses);
+        
       }
-      const initialCollapsedState = res.data.reduce((acc, [key, value]) => {
+
+      
+
+      const initialCollapsedState = norms.reduce((acc, [key, value]) => {
         if (typeof value === 'object' && value !== null) {
           Object.keys(value).forEach(innerKey => {
             acc[innerKey] = false;
@@ -168,6 +163,8 @@ const Norms = ({navigation, route}) => {
         return acc;
       }, {});
       setCollapsedState(initialCollapsedState);
+
+      
     } catch (err) {
       console.log(err);
     }
@@ -175,17 +172,27 @@ const Norms = ({navigation, route}) => {
 
   useEffect(() => {
     fetchApplicaitonDetails();
-    fetchNorms();
   }, []);
 
+  useEffect(() => {
+    console.log(height);
+    fetchNorms();
+  }, [height]);
+
+  useEffect(()=>{
+    setLoading(false)
+  },[userResponses])
+
   const handleResponse = (key, response) => {
-    setUserResponses(prevState => {
-      const newState = {
-        ...prevState,
-        [key]: response,
-      };
-      return newState;
-    });
+    setUserResponses(prevState => ({
+      ...prevState,
+      [key]: {
+        ...prevState[key], // Preserve any existing data for this key
+        availability: response, // Set the availability field
+        photo: prevState[key]?.photo || '', // Ensure photo key exists with default empty value
+        video: prevState[key]?.video || '', // Ensure video key exists with default empty value
+      },
+    }));
   };
 
   const complete = () => {
@@ -221,9 +228,9 @@ const Norms = ({navigation, route}) => {
         <Card
           style={[
             styles.card,
-            userResponses[key] && userResponses[key] === 'Yes'
+            userResponses[key] && userResponses[key].availability === 'Yes'
               ? styles.completedCardYes
-              : userResponses[key] === 'No'
+              : userResponses[key].availability === 'No'
               ? styles.completedCardNo
               : {},
           ]}>
@@ -267,7 +274,7 @@ const Norms = ({navigation, route}) => {
                 />
               </Button>
 
-              <Button
+              {/* <Button
                 style={styles.iconButton}
                 onPress={() => {
                   handleMediaUpload(key);
@@ -276,7 +283,7 @@ const Norms = ({navigation, route}) => {
                   source={require('../assets/screen-play.png')}
                   style={styles.icon}
                 />
-              </Button>
+              </Button> */}
             </Card.Actions>
           </Card>
         </Collapsible>
@@ -305,9 +312,9 @@ const Norms = ({navigation, route}) => {
         <Card
           style={[
             styles.card,
-            userResponses[key] && userResponses[key] === 'Yes'
+            userResponses[key] && userResponses[key].availability === 'Yes'
               ? styles.completedCardYes
-              : userResponses[key] === 'No'
+              : userResponses[key].availability === 'No'
               ? styles.completedCardNo
               : {},
           ]}>
@@ -352,7 +359,7 @@ const Norms = ({navigation, route}) => {
                 />
               </Button>
 
-              <Button
+              {/* <Button
                 style={styles.iconButton}
                 onPress={() => {
                   handleMediaUpload(key);
@@ -361,7 +368,7 @@ const Norms = ({navigation, route}) => {
                   source={require('../assets/screen-play.png')}
                   style={styles.icon}
                 />
-              </Button>
+              </Button> */}
             </Card.Actions>
           </Card>
         </Collapsible>
@@ -375,46 +382,57 @@ const Norms = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={norms}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        contentContainerStyle={{alignItems: 'center'}}
-      />
-      <View style={styles.endButtonContainer}>
-        <Button
-          mode="contained"
-          style={[styles.endButton]}
-          onPress={() => setIsVisible(true)}
-          disabled={!allCompleted}>
-          <Text style={styles.buttonText}>End Inspection</Text>
-        </Button>
-      </View>
-      <Modal
-        visible={isVisible}
-        onDismiss={complete}
-        contentContainerStyle={styles.modalContent}>
-        <Text style={styles.modalTitle}>End Inspection</Text>
+    <>
 
-        <View style={styles.buttonContainer}>
+    
+
+    {
+      loading?
+      (
+          <LottieView source={require('../assets/loading.json') } loop autoPlay style={styles.LottieView}/>
+       
+      ):(<View style={styles.container}>
+        <FlatList
+          data={norms}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          contentContainerStyle={{alignItems: 'center'}}
+        />
+        <View style={styles.endButtonContainer}>
           <Button
             mode="contained"
-            onPress={() => {
-              navigation.navigate('final', userResponses);
-            }}
-            style={[styles.button, styles.endButton]}>
-            <Text style={styles.buttonText}>End </Text>
-          </Button>
-          <Button
-            mode="outlined"
-            onPress={() => complete()}
-            style={[styles.button, styles.cancelButton]}>
-            <Text style={styles.cancelbuttonText}>Cancel</Text>
+            style={[styles.endButton]}
+            onPress={() => setIsVisible(true)}
+            disabled={!allCompleted}>
+            <Text style={styles.buttonText}>End Inspection</Text>
           </Button>
         </View>
-      </Modal>
-    </View>
+        <Modal
+          visible={isVisible}
+          onDismiss={complete}
+          contentContainerStyle={styles.modalContent}>
+          <Text style={styles.modalTitle}>End Inspection</Text>
+  
+          <View style={styles.buttonContainer}>
+            <Button
+              mode="contained"
+              onPress={() => {
+                navigation.navigate('final', userResponses);
+              }}
+              style={[styles.button, styles.endButton]}>
+              <Text style={styles.buttonText}>End </Text>
+            </Button>
+            <Button
+              mode="outlined"
+              onPress={() => complete()}
+              style={[styles.button, styles.cancelButton]}>
+              <Text style={styles.cancelbuttonText}>Cancel</Text>
+            </Button>
+          </View>
+        </Modal>
+      </View>)
+    }
+    </>
   );
 };
 
@@ -571,4 +589,10 @@ const styles = StyleSheet.create({
     width: '100%',
     gap: 10,
   },
+  lottieView: {
+  width: '100%', // Adjust to your needs
+  height: '70%', // Adjust to your needs
+  alignSelf: 'center', // Center horizontally
+  marginVertical: 20, // Add vertical spacing
+},
 });
