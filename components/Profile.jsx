@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,25 +8,57 @@ import {
   Dimensions,
   ImageBackground,
   Modal,
-  Pressable,
-} from 'react-native';
-import {Avatar, Card} from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {Button} from 'react-native-paper';
-const {width} = Dimensions.get('window');
+} from "react-native";
+import { Avatar, Card } from "react-native-paper";
+import { launchImageLibrary } from "react-native-image-picker";
+import Toast from "react-native-toast-message";
+import axios from "axios";
+import EncryptedStorage from "react-native-encrypted-storage";
+import { useFocusEffect } from "@react-navigation/native";
+
+const { width } = Dimensions.get("window");
 
 const Profile = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [photoType, setPhotoType] = useState(null); // "profile" or "cover"
+  const [userData, setUserData] = useState(null);
+
+  const getUser = useCallback(async () => {
+    try {
+      const userId = await EncryptedStorage.getItem("userid");
+      const token = await EncryptedStorage.getItem("session_token");
+      const userResponse = await axios.get(
+        `http://192.168.3.154:1703/user/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (userResponse.status === 200) {
+        setUserData(userResponse.data);
+      }
+    } catch (userError) {
+      Toast.show({
+        type: "error",
+        text1: "Error Fetching User Details",
+        text2: "Please check your Internet connection.",
+      });
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getUser();
+      console.log('idhu schedule',userData)
+    }, [getUser])
+  );
 
   const handleImagePick = () => {
-    launchImageLibrary({mediaType: 'photo', quality: 1}, response => {
+    launchImageLibrary({ mediaType: "photo", quality: 1 }, (response) => {
       if (!response.didCancel && !response.errorCode) {
-        if (photoType === 'profile') {
+        if (photoType === "profile") {
           setProfilePhoto(response.assets[0].uri); // Set the selected profile photo
-        } else if (photoType === 'cover') {
+        } else if (photoType === "cover") {
           setCoverPhoto(response.assets[0].uri); // Set the selected cover photo
         }
       }
@@ -34,119 +66,98 @@ const Profile = () => {
     });
   };
 
-  const handlePhotoPress = type => {
-    setPhotoType(type); // Set the type to either 'profile' or 'cover'
-    setModalVisible(true); // Show the modal
+  const handlePhotoPress = (type) => {
+    setPhotoType(type);
+    setModalVisible(true);
   };
 
-  const handleHistoryPress = () => {
-    alert('Showing full history');
-  };
+  const initials = userData?.username
+    ? userData.username
+        .split(" ")
+        .map((word) => word[0])
+        .join("")
+        .toUpperCase()
+    : "NA";
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Profile Header with Cover Image */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => handlePhotoPress('cover')}>
-          <ImageBackground
-            source={
-              coverPhoto
-                ? {uri: coverPhoto}
-                : {uri: 'https://via.placeholder.com/800x200'}
-            }
-            style={styles.coverImage}
-            imageStyle={{borderTopLeftRadius: 8, borderTopRightRadius: 8}}
-          />
-        </TouchableOpacity>
+      {/* Cover Image */}
+      <TouchableOpacity onPress={() => handlePhotoPress("cover")}>
+        <ImageBackground
+          source={
+            coverPhoto
+              ? { uri: coverPhoto }
+              : { uri: "https://via.placeholder.com/800x200" }
+          }
+          style={styles.coverImage}
+        />
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => handlePhotoPress('profile')}
-          style={styles.avatarWrapper}>
-          <Avatar.Image
-            size={120}
-            source={
-              profilePhoto
-                ? {uri: profilePhoto}
-                : {uri: 'https://via.placeholder.com/120'}
-            }
-            style={styles.avatar}
-          />
-        </TouchableOpacity>
+      {/* Profile Image */}
+      <TouchableOpacity
+        onPress={() => handlePhotoPress("profile")}
+        style={styles.avatarWrapper}
+      >
+        {profilePhoto ? (
+          <Avatar.Image size={120} source={{ uri: profilePhoto }} />
+        ) : (
+          <Avatar.Text size={120} label={initials} style={styles.avatar} />
+        )}
+      </TouchableOpacity>
 
-        <Text style={styles.name}>John Doe</Text>
-        <Text style={styles.title}>Fire Safety Inspector</Text>
-        <Text style={styles.station}>Station: Downtown Fire Station</Text>
-      </View>
+      {/* Username and User Type */}
+      <Text style={styles.name}>{userData?.username || "John Doe"}</Text>
+      <Text style={styles.title}>
+        {userData?.user_type || "Inspector"}
+      </Text>
 
-      {/* Bio Section */}
+      {/* About Me Section (Including Station, District, and Village) */}
       <Card style={styles.card}>
         <Card.Content>
           <Text style={styles.sectionTitle}>About Me</Text>
           <Text style={styles.text}>
-            Experienced Fire Safety Inspector with over 10 years of field
-            expertise. Certified in advanced safety management, dedicated to
-            ensuring fire prevention.
+            {`Inspector for ${userData?.officer_details?.district || "N/A"}, ${
+              userData?.officer_details?.village || "N/A"
+            }. Station: ${userData?.officer_details?.station || "N/A"}`}
           </Text>
         </Card.Content>
       </Card>
 
-      {/* Achievements Section */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.sectionTitle}>Achievements</Text>
-          <Text style={styles.text}>🏆 Fire Safety Excellence Award 2023</Text>
-          <Text style={styles.text}>
-            📜 Advanced Fire Safety Management Certification
-          </Text>
-        </Card.Content>
-      </Card>
-
-      {/* Work Rating */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.sectionTitle}>Work Rating</Text>
-          <Text style={styles.text}>
-            ⭐ Rating: 4.8 / 5 (Based on 50+ inspections)
-          </Text>
-        </Card.Content>
-      </Card>
-
-      {/* Inspection History */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.sectionTitle}>Inspection History</Text>
-          <Text style={styles.text}>📝 ABC Building Inspection - Oct 2024</Text>
-          <Text style={styles.text}>
-            📝 XYZ Building Inspection - Sept 2024
-          </Text>
-          <Text style={styles.text}>📝 50+ inspections completed</Text>
-        </Card.Content>
-        <Button
-          mode="contained"
-          textColor="#FFFFFF"
-          onPress={() => console.log('show')}
-          style={styles.showHistoryButton}>
-          <Text style={styles.showHistoryButtonText}>Show Full History</Text>
-        </Button>
-      </Card>
+      {/* Officer History (ScheduleDetails) */}
+      {userData?.scheduleDetails?.length > 0 && (
+        <>
+          <Text style={styles.historyTitle}>Officer History</Text>
+          {userData.scheduleDetails.map((schedule, index) => (
+            <Card key={index} style={styles.card}>
+              <Card.Content>
+                <Text style={styles.sectionTitle}>Schedule {index + 1}</Text>
+                <Text style={styles.text}>Timestamp: {schedule.timestamp}</Text>
+                <Text style={styles.text}>User ID: {schedule.user_id}</Text>
+                <Text style={styles.text}>User Type: {schedule.user_type}</Text>
+                <Text style={styles.text}>Username: {schedule.username}</Text>
+              </Card.Content>
+            </Card>
+          ))}
+        </>
+      )}
 
       {/* Modal for Image Options */}
       <Modal
         transparent={true}
         visible={modalVisible}
         animationType="fade"
-        onRequestClose={() => setModalVisible(false)}>
+        onRequestClose={() => setModalVisible(false)}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Select an option</Text>
-            <TouchableOpacity
-              onPress={handleImagePick}
-              style={styles.modalButton}>
+            <TouchableOpacity onPress={handleImagePick} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Edit Photo</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
-              style={styles.modalButton}>
+              style={styles.modalButton}
+            >
               <Text style={styles.modalButtonText}>View Photo</Text>
             </TouchableOpacity>
           </View>
@@ -158,121 +169,90 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: '#f8f8f8',
-    // padding: 20,
+    backgroundColor: "#fff",
     paddingHorizontal: 20,
-    paddingBottom: 60,
-  },
-  header: {
-    backgroundColor: '#fff',
-    paddingBottom: 20,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
-    marginBottom: 20,
+    paddingBottom: 40,
+    paddingTop: 20, // Padding top for better scroll behavior
   },
   coverImage: {
     width: width,
     height: 200,
-    backgroundColor: '#d0d0d0', // Placeholder for cover photo
+    backgroundColor: "#bfbfbf",
   },
-  avatar: {
-    // borderWidth: 4,
-    borderColor: '#bfbfbf',
+  avatarWrapper: {
+    alignSelf: "center",
     marginTop: -60,
   },
+  avatar: {
+    backgroundColor: "#ff8400",
+  },
   name: {
-    fontFamily: 'DMSans Bold',
-    fontSize: 32,
-    color: '#2b2e36',
+    fontFamily: "DMSans-Bold",
+    fontSize: 24,
+    color: "#2b2e36",
+    textAlign: "center",
     marginTop: 10,
   },
   title: {
-    fontFamily: 'DM Sans Regular',
-    fontSize: 20,
-    color: '#6c6c6c',
-    marginTop: 5,
-  },
-  station: {
-    fontFamily: 'DM Sans Regular',
-    fontSize: 14,
-    color: '#6c6c6c',
-    marginTop: 5,
+    fontFamily: "DM Sans-Regular",
+    fontSize: 18,
+    color: "#bfbfbf",
+    textAlign: "center",
   },
   card: {
     marginBottom: 20,
+    backgroundColor: "#fff",
     borderRadius: 8,
-    backgroundColor: '#fff',
-    padding: 20,
-    shadowColor: '#2b2e36',
-    shadowOpacity: 0.1,
-    shadowOffset: {width: 0, height: 5},
-    shadowRadius: 8,
-    elevation: 8,
+    padding: 16,
+    elevation: 4,
   },
   sectionTitle: {
-    fontFamily: 'DMSans Bold',
-    fontSize: 24,
-    color: '#2b2e36',
+    fontFamily: "DMSans-Bold",
+    fontSize: 18,
+    color: "#2b2e36",
     marginBottom: 10,
   },
   text: {
-    fontFamily: 'DM Sans Regular',
+    fontFamily: "DM Sans-Regular",
     fontSize: 16,
-    color: '#6c6c6c',
-    marginBottom: 6,
+    color: "#2b2e36",
   },
-  showHistoryButton: {
-    marginTop: 15,
-    backgroundColor: '#ff8400',
-    borderRadius: 3,
-    alignItems: 'center',
-  },
-  showHistoryButtonText: {
-    fontFamily: 'DMSans Bold',
-    color: '#fff',
-    fontSize: 18,
+  historyTitle: {
+    fontFamily: "DMSans-Bold",
+    fontSize: 20,
+    color: "#2b2e36",
+    marginTop: 20,
+    marginBottom: 10,
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    width: '80%',
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalTitle: {
-    fontFamily: 'DMSans Bold',
+    fontFamily: "DMSans-Bold",
     fontSize: 18,
-    color: '#2b2e36',
+    color: "#2b2e36",
     marginBottom: 20,
   },
   modalButton: {
     marginTop: 10,
     paddingVertical: 12,
-    paddingHorizontal: 30,
-    backgroundColor: '#ff8400',
-    borderRadius: 30,
-    alignItems: 'center',
-    width: '100%',
-    shadowColor: '#2b2e36',
-    shadowOpacity: 0.2,
-    shadowOffset: {width: 0, height: 5},
-    shadowRadius: 8,
-    elevation: 8,
+    paddingHorizontal: 20,
+    backgroundColor: "#ff8400",
+    borderRadius: 6,
   },
   modalButtonText: {
-    fontFamily: 'DMSans Bold',
-    color: '#fff',
-    fontSize: 16,
+    fontFamily: "DMSans-Bold",
+    color: "#fff",
   },
-  
 });
 
 export default Profile;

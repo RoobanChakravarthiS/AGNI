@@ -7,7 +7,7 @@ const LottiePage = ({navigation}) => {
   useEffect(()=>{
     setTimeout(()=>{
       navigation.navigate('BottomTab')
-    })
+    },3000)
   })
   return (
     <View style={styles.container}>

@@ -18,7 +18,7 @@ const BottomTab = () => {
     sendNotification();
   }
   return (
-    <Tab.Navigator
+    <Tab.Navigator initialRouteName='Home'
       screenOptions={({route}) => ({
         tabBarStyle: styles.tabBarStyle,
         tabBarActiveTintColor: '#ff8400', // Active icon color
@@ -41,7 +41,7 @@ const BottomTab = () => {
           // Return image for tab icon
           return (
             <Image
-              source={iconSource}
+              source={iconSource} 
               style={[
                 styles.icon,
                 {tintColor: focused ? '#ff8400' : '#3e3e3e'},

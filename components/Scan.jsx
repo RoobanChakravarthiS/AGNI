@@ -4,9 +4,8 @@ import {Alert} from 'react-native';
 import {Camera, CameraType} from 'react-native-camera-kit';
 const Scan = ({navigation}) => {
   const handleRead = (event)=>{
-    console.log(event.nativeEvent.codeStringValue)
-    // Alert.alert('QR code found');
-    navigation.navigate('norms')
+    const code = event.nativeEvent.codeStringValue
+    navigation.navigate('norms',code)
     SetScanned(false)
   }
   const[scanned,SetScanned] = useState(true)
@@ -19,7 +18,6 @@ const Scan = ({navigation}) => {
         <Camera
           scanBarcode={scanned}
           onReadCode={event => handleRead(event)}
-          // showFrame={true}
           laserColor="red"
           frameColor="white"
           style={{height:300}}

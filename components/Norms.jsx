@@ -5,18 +5,34 @@ import Collapsible from 'react-native-collapsible';
 import {Button, Card, Modal} from 'react-native-paper';
 import {launchCamera} from 'react-native-image-picker';
 import {TextInput} from 'react-native-paper';
+import axios from 'axios';
 const Norms = ({navigation, route}) => {
-  const code = 'RES-123456';
+  console.log(route.params);
+  const code = route.params || 'RES-123456';
   const [norms, setNorms] = useState([]);
   const [remarks, setRemarks] = useState({});
   const [collapsedState, setCollapsedState] = useState({});
   const [media, setMedia] = useState({});
   const [photo, setPhoto] = useState({});
-  const [userResponses, setUserResponses] = useState({}); // Tracks user responses (Yes/No)
-  const [allCompleted, setAllCompleted] = useState(false); // Tracks if all fields are done
-  const height = 15;
+  const [userResponses, setUserResponses] = useState({});
+  const [allCompleted, setAllCompleted] = useState(false);
+  // let height;
   const [isVisible, setIsVisible] = useState(false);
   const [remarkCollapsedState, setRemarkCollapsedState] = useState({});
+
+  const url = `http://192.168.3.154:1703`;
+  const [height, setHeight] = useState(0);
+
+  const fetchApplicaitonDetails = async () => {
+    try {
+      const res = await axios.get(`${url}/application/${code}`);
+      if (res.status === 200) {
+        setHeight(res.data.details.ApplicationDetails.height);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const [remark, setRemark] = useState();
   const findCategory = type => {
@@ -27,13 +43,43 @@ const Norms = ({navigation, route}) => {
         if (height < 45) return 2;
         if (height < 60) return 3;
         return 4;
+      case 'EDU':
+        if (height < 15) return 0;
+        if (height < 30) return 1;
+        return 2;
+      case 'INS':
+        if (height < 15) return 0;
+        if (height < 30) return 1;
+        return 2;
+      case 'ASM':
+        if (height < 15) return 0;
+        if (height < 30) return 1;
+        return 2;
+      case 'BUS':
+        if (height < 15) return 0;
+        if (height < 24) return 1;
+        return 2;
+      case 'MRC':
+        if (height < 15) return 0;
+        if (height < 24) return 1;
+        return 2;
+      case 'IND':
+        if (height < 15) return 0;
+        if (height < 24) return 1;
+        return 2;
+      case 'STR':
+        if (height < 15) return 0;
+        return 1;
+      case 'HAZ':
+        if (height < 15) return 0;
+        return 1;
       default:
         return 0;
     }
   };
 
   const handleImageUpload = key => {
-    console.log(key)
+    console.log(key);
     launchCamera({mediaType: 'photo'}, async response => {
       if (response.didCancel) {
         console.log('User cancelled media picker');
@@ -45,10 +91,10 @@ const Norms = ({navigation, route}) => {
         const {uri, fileName, type} = response.assets[0];
         setPhoto(prevPhoto => {
           const newPhoto = {...prevPhoto, [key]: {uri, type, fileName}};
-          console.log("idhu dhaan da thaileee key",key)
+          console.log('idhu dhaan da thaileee key', key);
           setUserResponses(prevResponses => ({
             ...prevResponses,
-            
+
             [key]: {...prevResponses[key], Photo: newPhoto[key]},
           }));
           return newPhoto;
@@ -102,39 +148,41 @@ const Norms = ({navigation, route}) => {
     }));
   };
 
-  const fetchNorms = () => {
-    const buildingData = data[code.substring(0, 3)];
-    if (buildingData) {
+  const fetchNorms = async () => {
+    try {
       const categoryIndex = findCategory(code.substring(0, 3));
-      const req = Object.entries(buildingData.categories[categoryIndex].norms);
-      setNorms(req);
-
-      // Initialize collapsed state for all items, including inner object keys
-      const initialCollapsedState = req.reduce((acc, [key, value]) => {
+      const res = await axios.get(
+        `${url}/norms/${code}?index=${categoryIndex}`,
+      );
+      if (res.status === 200) {
+        setNorms(res.data);
+      }
+      const initialCollapsedState = res.data.reduce((acc, [key, value]) => {
         if (typeof value === 'object' && value !== null) {
-          // If value is an object, initialize collapsed state for its keys
           Object.keys(value).forEach(innerKey => {
-            acc[innerKey] = false; // Use a dot-separated key for uniqueness
+            acc[innerKey] = false;
           });
         } else {
-          acc[key] = false; // For non-object values
+          acc[key] = false;
         }
         return acc;
       }, {});
       setCollapsedState(initialCollapsedState);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   useEffect(() => {
+    fetchApplicaitonDetails();
     fetchNorms();
   }, []);
 
-  // Handle Yes/No response and store it
   const handleResponse = (key, response) => {
     setUserResponses(prevState => {
       const newState = {
         ...prevState,
-        [key]: response, // Save user response (Yes/No)
+        [key]: response,
       };
       return newState;
     });
@@ -144,7 +192,6 @@ const Norms = ({navigation, route}) => {
     setIsVisible(!isVisible);
   };
 
-  // Check if all responses are filled (Yes/No)
   useEffect(() => {
     const allAnswered =
       norms.length > 0 && Object.keys(userResponses).length >= norms.length;
@@ -155,9 +202,8 @@ const Norms = ({navigation, route}) => {
   const toggleCollapse = key => {
     setCollapsedState(prevState => {
       const newState = {...prevState};
-      newState[key] = !newState[key]; // Toggle the selected key
+      newState[key] = !newState[key];
 
-      // Close other collapsible sections (optional)
       Object.keys(prevState).forEach(k => {
         if (k !== key) {
           newState[k] = false;
@@ -169,11 +215,7 @@ const Norms = ({navigation, route}) => {
   };
 
   const renderObjectItem = ({item, index, parentKey}) => {
-    // console.log(item[1])
     const key = item[0];
-    // console.log(key)
-
-     // Unique key for child collapsible
     return (
       <View style={styles.cardContainer}>
         <Card
@@ -224,7 +266,6 @@ const Norms = ({navigation, route}) => {
                   style={styles.icon}
                 />
               </Button>
-              
 
               <Button
                 style={styles.iconButton}
@@ -237,8 +278,6 @@ const Norms = ({navigation, route}) => {
                 />
               </Button>
             </Card.Actions>
-
-            
           </Card>
         </Collapsible>
       </View>
@@ -312,7 +351,6 @@ const Norms = ({navigation, route}) => {
                   style={styles.icon}
                 />
               </Button>
-              
 
               <Button
                 style={styles.iconButton}
@@ -325,7 +363,6 @@ const Norms = ({navigation, route}) => {
                 />
               </Button>
             </Card.Actions>
-            
           </Card>
         </Collapsible>
       </View>
@@ -341,12 +378,10 @@ const Norms = ({navigation, route}) => {
     <View style={styles.container}>
       <FlatList
         data={norms}
-        keyExtractor={(item, index) => index.toString()} // Unique key for each item
+        keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        contentContainerStyle={{alignItems: 'center'}} // Center align FlatList content
+        contentContainerStyle={{alignItems: 'center'}}
       />
-
-      {/* End Inspection Button */}
       <View style={styles.endButtonContainer}>
         <Button
           mode="contained"
@@ -366,9 +401,8 @@ const Norms = ({navigation, route}) => {
           <Button
             mode="contained"
             onPress={() => {
-              navigation.navigate('final', userResponses)
-              // console.log(userResponses)
-              }}
+              navigation.navigate('final', userResponses);
+            }}
             style={[styles.button, styles.endButton]}>
             <Text style={styles.buttonText}>End </Text>
           </Button>

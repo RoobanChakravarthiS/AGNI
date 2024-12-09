@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -6,8 +7,11 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  TextInput
+  TextInput,
+  Alert
 } from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import { Modal } from 'react-native-paper';
 import Video from 'react-native-video';
 
 const FinalPage = ({ navigation, route }) => {
@@ -19,7 +23,11 @@ const FinalPage = ({ navigation, route }) => {
   const [visibleMedia, setVisibleMedia] = useState({}); // To control the media visibility
   const [visibleRemarkInput, setVisibleRemarkInput] = useState({}); // To control the visibility of the remark input field
   const [recommendation, setRecommendation] = useState(''); // To store final recommendation
-
+  const [isVisible,setIsVisible] = useState(false)
+  const [secretCode, setSecretCode]  = useState()
+  const [error, setError] = useState(null);
+  const [focusedField, setFocusedField] = useState(null);
+  const url =`http://192.168.3.154:1111`
   // Convert object to array format for FlatList
   const dataArray = Object.entries(data).map(([key, value]) => {
     if (typeof value === 'object' && value !== null) {
@@ -69,11 +77,29 @@ const FinalPage = ({ navigation, route }) => {
     setRecommendation(recommendationType);
   };
 
+  const closeModal = () =>{
+    setIsVisible(false)
+  }
+
   // Handle Close Case button (Finalize and navigate back)
   const handleCloseCase = () => {
-    // For example, navigate to a previous screen
-    navigation.navigate('lottie');
+    setIsVisible(true)
+    // navigation.navigate('lottie');
   };
+
+
+  const checkCode = () =>{
+    const code = EncryptedStorage.getItem('code')
+    if(secretCode === code){
+      handleSubmitCase()
+    }
+    else{
+      Alert.alert('Wrong credentials')
+    }
+  }
+  const handleSubmitCase = async()=>{
+    const res = await axios.post(`${url}/`)
+  }
 
   return (
     <View style={styles.container}>
@@ -196,6 +222,46 @@ const FinalPage = ({ navigation, route }) => {
       >
         <Text style={styles.buttonText}>Submit Report</Text>
       </TouchableOpacity>
+      <Modal
+          visible={isVisible}
+          onDismiss={closeModal}
+          contentContainerStyle={styles.modalstyles}
+        >
+          <View style={styles.container}>
+      <Text style={styles.label}>Enter the Secret Code</Text>
+      <TextInput
+        label="Secret Code"
+        value={code}
+        mode="flat"
+        style={[
+          styles.textInput,
+          focusedField === 'code' && styles.focusedTextInput,
+          error && styles.errorInput, // Apply error styling if there's an error
+        ]}
+        theme={{
+          colors: {
+            primary: '#ff8400',
+            placeholder: '#bfbfbf',
+            text: '#2b2e36',
+            background: 'transparent',
+          },
+        }}
+        onFocus={() => setFocusedField('code')}
+        onBlur={() => setFocusedField(null)}
+        onChangeText={text => setSecretCode(text)}
+      />
+      {error && <Text style={styles.errorText}>{error}</Text>}
+
+      <Button
+        mode="contained"
+        onPress={checkCode}
+        style={styles.submitButton}
+        labelStyle={styles.buttonLabel}>
+        Submit
+      </Button>
+    </View>
+      </Modal>
+
     </View>
   );
 };
@@ -211,7 +277,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     color: '#2b2e36',
     marginBottom: 20,
   },
@@ -228,13 +294,13 @@ const styles = StyleSheet.create({
   },
   normText: {
     fontSize: 16,
-    fontFamily: 'DMSans-Regular',
+    fontFamily: 'DM Sans Regular',
     color: '#2b2e36',
     marginBottom: 5,
   },
   responseText: {
     fontSize: 16,
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
   },
   yesText: {
     color: 'green',
@@ -250,12 +316,12 @@ const styles = StyleSheet.create({
   },
   remarkTitle: {
     fontSize: 14,
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     color: '#2b2e36',
   },
   remarkText: {
     fontSize: 14,
-    fontFamily: 'DMSans-Regular',
+    fontFamily: 'DMSans Regular',
     color: '#2b2e36',
     marginTop: 5,
   },
@@ -268,7 +334,7 @@ const styles = StyleSheet.create({
   },
   mediaButtonText: {
     color: '#fff',
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     fontSize: 14,
   },
   mediaContainer: {
@@ -290,7 +356,7 @@ const styles = StyleSheet.create({
   },
   addRemarkText: {
     color: '#fff',
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     fontSize: 14,
   },
   remarkInputContainer: {
@@ -302,7 +368,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 5,
-    fontFamily: 'DMSans-Regular',
+    fontFamily: 'DM Sans Regular',
     color: '#2b2e36',
     fontSize: 14,
     textAlignVertical: 'top',
@@ -316,7 +382,7 @@ const styles = StyleSheet.create({
   },
   saveRemarkText: {
     color: '#fff',
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     fontSize: 14,
   },
   recommendationContainer: {
@@ -336,7 +402,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     fontSize: 14,
   },
   finalRecommendationContainer: {
@@ -347,7 +413,7 @@ const styles = StyleSheet.create({
   },
   finalRecommendationText: {
     fontSize: 16,
-    fontFamily: 'DMSans-Bold',
+    fontFamily: 'DMSans Bold',
     color: '#2b2e36',
   },
   closeCaseButton: {

@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {Button, Text, TextInput} from 'react-native-paper';
-
+import Toast from 'react-native-toast-message';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import axios from 'axios';
 const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,23 +13,79 @@ const Login = ({navigation}) => {
     password: false,
   });
   const [isnumber, setIsNumber] = useState(false);
-
   const buttonColor = '#ff8400';
 
-  const handleLogin = () => {
+  const ToastConfig = {
+    success: ({text1, text2}) => (
+      <View style={[styles.toastContainer, styles.successToast]}>
+        <Text style={styles.toastTitle}>{text1}</Text>
+        {text2 ? <Text style={styles.toastMessage}>{text2}</Text> : null}
+      </View>
+    ),
+    error: ({text1, text2}) => (
+      <View style={[styles.toastContainer, styles.errorToast]}>
+        <Text style={styles.toastTitle}>{text1}</Text>
+        {text2 ? <Text style={styles.toastMessage}>{text2}</Text> : null}
+      </View>
+    ),
+    info: ({text1, text2}) => (
+      <View style={[styles.toastContainer, styles.infoToast]}>
+        <Text style={styles.toastTitle}>{text1}</Text>
+        {text2 ? <Text style={styles.toastMessage}>{text2}</Text> : null}
+      </View>
+    ),
+  };
+
+  const handleLogin = async () => {
     if (username.trim() === '' || password.trim() === '') {
       setErrors({
         username: username.trim() === '',
         password: password.trim() === '',
       });
-    } else {
-      setErrors({username: false, password: false});
-      navigation.navigate('BottomTab'); // Navigate only if no errors
+      return;
+    }
+    setErrors({username: false, password: false});
+
+    try {
+      const res = await axios.post(`http://192.168.3.154:1703/login`, {
+        username,
+        password,
+      });
+      if (res.status === 200) {
+        console.log(res.data);
+        const {token, userid, officer_pin} = res.data;
+        await EncryptedStorage.setItem('session_token', token);
+        await EncryptedStorage.setItem('userid', userid);
+        await EncryptedStorage.setItem('officer_pin', officer_pin);
+        Toast.show({
+          type: 'success',
+          text1: 'Welcome!',
+          text2: 'Login Successful 🎉',
+        });
+        // console.log('Login Successful:', { token, userid, officer_pin });
+        setTimeout(() => navigation.navigate('BottomTab'), 2000);
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Credentials',
+          text2: 'Please check your username and password.',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Oops!',
+          text2: 'Something went wrong. Please try again.',
+        });
+      }
+      console.error('Login Error:', error.message || error.response?.data);
     }
   };
 
   return (
     <View style={styles.container}>
+    <Toast config={ToastConfig}/>
       <View style={styles.welcomeContainer}>
         <Image style={styles.logo} source={require('../assets/logo.jpg')} />
       </View>
@@ -70,7 +128,7 @@ const Login = ({navigation}) => {
             style={[
               styles.textInput,
               focusedField === 'password' && styles.focusedTextInput,
-              errors.password && styles.errorInput, // Apply error styling
+              errors.password && styles.errorInput,
             ]}
             theme={{
               colors: {
@@ -135,6 +193,37 @@ const styles = StyleSheet.create({
     padding: 14,
     backgroundColor: '#fff',
     alignItems: 'center',
+  },
+  toastContainer: {
+    padding: 16,
+    borderRadius: 10,
+    marginHorizontal: 20,
+    marginTop: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  successToast: {
+    backgroundColor: '#4CAF50', // Green for success
+  },
+  errorToast: {
+    backgroundColor: '#F44336', // Red for error
+  },
+  infoToast: {
+    backgroundColor: '#2196F3', // Blue for info
+  },
+  toastTitle: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  toastMessage: {
+    color: '#f5f5f5',
+    fontSize: 14,
+    fontWeight: '400',
   },
   welcomeContainer: {
     marginBottom: 30,

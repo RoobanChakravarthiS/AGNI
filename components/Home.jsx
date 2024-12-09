@@ -3,6 +3,10 @@ import {View, StyleSheet, FlatList} from 'react-native';
 import {Avatar, Button, Card, Text, Divider} from 'react-native-paper';
 import Calendar from 'react-native-calendars/src/calendar';
 import {PermissionsAndroid} from 'react-native';
+import axios from 'axios';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Toast from 'react-native-toast-message';
+import { tokens } from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
 const LeftContent = props => (
   <Avatar.Image
     {...props}
@@ -12,231 +16,83 @@ const LeftContent = props => (
   />
 );
 const Home = ({navigation}) => {
+  const [userData, setUserData] = useState();
+  const [loading, setLoading] = useState();
+  const [events, setEvents] = useState();
+  const getUser = async () => {
+    try {
+      // Retrieve session token and userId
+      const token = await EncryptedStorage.getItem('session_token');
+      const userId = await EncryptedStorage.getItem('userid');
+      const code = await EncryptedStorage.getItem('code')
+      // If no token, navigate to Login and stop further execution
+      if (!token) {
+        navigation.navigate('login');
+        return;
+      }
 
-  
+      // Verify token with the backend
+      const authResponse = await axios.get(
+        `https://sih-backend-zeta.vercel.app/auth`,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        },
+      );
+
+      if (authResponse.status === 200) {
+        // Fetch user data
+        try {
+          const userResponse = await axios.get(
+            `http://192.168.3.154:1703/user/${userId}`,
+            {
+              headers: {Authorization: `Bearer ${token}`},
+            },
+          );
+
+          if (userResponse.status === 200) {
+            setUserData(userResponse.data); // Update user data state
+            setEvents(userResponse.data.scheduleDetails);
+          }
+        } catch (userError) {
+          // Handle errors during user data fetching
+          if (userError.response?.status === 404) {
+            Toast.show({
+              type: 'error',
+              text1: 'Fetching User Details Failed',
+              text2: 'Application not found.',
+            });
+          } else {
+            console.log(userError);
+            Toast.show({
+              type: 'error',
+              text1: 'Error Fetching User Details',
+              text2: 'Please check your Internet connection.',
+            });
+          }
+        }
+      }
+    } catch (authError) {
+
+      console.error('Error during authentication:', authError);
+      Toast.show({
+        type: 'error',
+        text1: 'Authentication Failed',
+        text2: 'Please check your Internet connection.',
+      });
+    }
+    const code = EncryptedStorage.getItem('code')
+    if(!code){
+      navigation.navigate('code')
+    }
+
+  };
+
+  useEffect(() => {
+    getUser();
+  },[]);
+
   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-  const events = [
-    {
-      id: 'ABC123001',
-      inspectionDate: '2024-12-02',
-      assignedInspector: 'Inspector Rajesh Kumar',
-      details: {
-        ApplicationDetail: {
-          ApplicantName: 'John Doe',
-          BuildingName: 'City Towers',
-          State: 'Delhi',
-          District: 'New Delhi',
-          Taluk: 'Connaught Place',
-          RevenueVillage: 'Connaught Village',
-          DoorNo: '123',
-          StreetNo: '45',
-          Pincode: '110001',
-          Landline: '011-12345678',
-          MobileNumber: '123-456-7890',
-          Mail: 'john.doe@example.com',
-          TypeOfOccupancy: 'Residential',
-          ApproachRoadWidth: '10 meters',
-          EntranceWidth: '2 meters',
-          EntranceHeight: '3 meters',
-          BuildingHeight: '30 meters',
-          Setbacks: {
-            North: '5 meters',
-            South: '6 meters',
-            East: '4 meters',
-            West: '5 meters',
-          },
-        },
-        FloorDetails: {},
-        MeansOfEscape: {},
-        LiftDetails: {},
-        FireCompartmentationDetails: {},
-        FireProtection: {},
-        FirePump: {},
-        WaterSupply: {},
-        AdditionalFireDetails: {},
-        Checklist: {},
-      },
-      buildingType: 'MSB',
-      status: 'Scheduled',
-      remark: 'Inspection confirmed',
-    },
-    {
-      id: 'DEF123002',
-      inspectionDate: '2024-12-02',
-      assignedInspector: 'Inspector Priya Sharma',
-      details: {
-        ApplicationDetail: {
-          ApplicantName: 'Alice Johnson',
-          BuildingName: 'Oak Residences',
-          State: 'Delhi',
-          District: 'South Delhi',
-          Taluk: 'Saket',
-          RevenueVillage: 'Saket Village',
-          DoorNo: '67',
-          StreetNo: '89',
-          Pincode: '110017',
-          Landline: '011-23456789',
-          MobileNumber: '234-567-8901',
-          Mail: 'alice.johnson@example.com',
-          TypeOfOccupancy: 'Commercial',
-          ApproachRoadWidth: '12 meters',
-          EntranceWidth: '2.5 meters',
-          EntranceHeight: '3.2 meters',
-          BuildingHeight: '25 meters',
-          Setbacks: {
-            North: '6 meters',
-            South: '5 meters',
-            East: '4.5 meters',
-            West: '5.5 meters',
-          },
-        },
-        FloorDetails: {},
-        MeansOfEscape: {},
-        LiftDetails: {},
-        FireCompartmentationDetails: {},
-        FireProtection: {},
-        FirePump: {},
-        WaterSupply: {},
-        AdditionalFireDetails: {},
-        Checklist: {},
-      },
-      buildingType: 'MSB',
-      status: 'Scheduled',
-      remark: 'Preliminary inspection scheduled',
-    },
-    {
-      id: 'GHI123003',
-      inspectionDate: '2024-12-03',
-      assignedInspector: 'Inspector Sunil Verma',
-      details: {
-        ApplicationDetail: {
-          ApplicantName: 'Jane Smith',
-          BuildingName: 'Pineview Apartments',
-          State: 'Delhi',
-          District: 'South West Delhi',
-          Taluk: 'Vasant Vihar',
-          RevenueVillage: 'Vasant Village',
-          DoorNo: '78',
-          StreetNo: '12',
-          Pincode: '110057',
-          Landline: '011-34567890',
-          MobileNumber: '345-678-9012',
-          Mail: 'jane.smith@example.com',
-          TypeOfOccupancy: 'Mixed-use',
-          ApproachRoadWidth: '15 meters',
-          EntranceWidth: '3 meters',
-          EntranceHeight: '3.5 meters',
-          BuildingHeight: '20 meters',
-          Setbacks: {
-            North: '4 meters',
-            South: '5 meters',
-            East: '6 meters',
-            West: '3 meters',
-          },
-        },
-        FloorDetails: {},
-        MeansOfEscape: {},
-        LiftDetails: {},
-        FireCompartmentationDetails: {},
-        FireProtection: {},
-        FirePump: {},
-        WaterSupply: {},
-        AdditionalFireDetails: {},
-        Checklist: {},
-      },
-      buildingType: 'MSB',
-      status: 'Scheduled',
-      remark: 'Initial inspection confirmed',
-    },
-    {
-      id: 'JKL123004',
-      inspectionDate: '2024-12-05',
-      assignedInspector: 'Inspector Meera Singh',
-      details: {
-        ApplicationDetail: {
-          ApplicantName: 'Michael Lee',
-          BuildingName: 'Dwarka Heights',
-          State: 'Delhi',
-          District: 'South West Delhi',
-          Taluk: 'Dwarka',
-          RevenueVillage: 'Dwarka Village',
-          DoorNo: '45',
-          StreetNo: '67',
-          Pincode: '110075',
-          Landline: '011-45678901',
-          MobileNumber: '456-789-0123',
-          Mail: 'michael.lee@example.com',
-          TypeOfOccupancy: 'Residential',
-          ApproachRoadWidth: '9 meters',
-          EntranceWidth: '2 meters',
-          EntranceHeight: '3 meters',
-          BuildingHeight: '40 meters',
-          Setbacks: {
-            North: '3 meters',
-            South: '4 meters',
-            East: '5 meters',
-            West: '2 meters',
-          },
-        },
-        FloorDetails: {},
-        MeansOfEscape: {},
-        LiftDetails: {},
-        FireCompartmentationDetails: {},
-        FireProtection: {},
-        FirePump: {},
-        WaterSupply: {},
-        AdditionalFireDetails: {},
-        Checklist: {},
-      },
-      buildingType: 'MSB',
-      status: 'Scheduled',
-      remark: 'Inspection scheduled',
-    },
-    {
-      id: 'MNO123005',
-      inspectionDate: '2024-12-06',
-      assignedInspector: 'Inspector Ramesh Gupta',
-      details: {
-        ApplicationDetail: {
-          ApplicantName: 'Sophia Patel',
-          BuildingName: 'Lajpat Plaza',
-          State: 'Delhi',
-          District: 'South Delhi',
-          Taluk: 'Lajpat Nagar',
-          RevenueVillage: 'Lajpat Village',
-          DoorNo: '89',
-          StreetNo: '23',
-          Pincode: '110024',
-          Landline: '011-56789012',
-          MobileNumber: '567-890-1234',
-          Mail: 'sophia.patel@example.com',
-          TypeOfOccupancy: 'Commercial',
-          ApproachRoadWidth: '14 meters',
-          EntranceWidth: '3 meters',
-          EntranceHeight: '3.5 meters',
-          BuildingHeight: '50 meters',
-          Setbacks: {
-            North: '6 meters',
-            South: '5 meters',
-            East: '7 meters',
-            West: '4 meters',
-          },
-        },
-        FloorDetails: {},
-        MeansOfEscape: {},
-        LiftDetails: {},
-        FireCompartmentationDetails: {},
-        FireProtection: {},
-        FirePump: {},
-        WaterSupply: {},
-        AdditionalFireDetails: {},
-        Checklist: {},
-      },
-      buildingType: 'MSB',
-      status: 'Scheduled',
-      remark: 'Inspection confirmed',
-    },
-  ];
+
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split('T')[0],
   );
@@ -244,14 +100,22 @@ const Home = ({navigation}) => {
   const [markedDates, setMarkedDates] = useState({});
 
   useEffect(() => {
+    if (!events || events.length === 0) {
+      setFilteredEvents([]);
+      setMarkedDates({});
+      return;
+    }
+
     const dateEvents = events.filter(
       event => event.inspectionDate === selectedDate,
     );
     setFilteredEvents(dateEvents);
+
     const datesWithEvents = events.reduce((acc, event) => {
       acc[event.inspectionDate] = {marked: true, dotColor: '#ff8400'};
       return acc;
     }, {});
+
     setMarkedDates({
       ...datesWithEvents,
       [selectedDate]: {
@@ -262,15 +126,13 @@ const Home = ({navigation}) => {
         dotColor: '#ff8400',
       },
     });
-  }, [selectedDate]);
+  }, [events, selectedDate]);
 
   const handleDetails = data => {
-    // console.log(data.details.ApplicationDetail.Setbacks)
     navigation.navigate('details', data);
   };
 
   const renderEventItem = ({item}) => {
-  //  console.log(item)
     return (
       <Card style={styles.card}>
         <Card.Title
@@ -282,8 +144,12 @@ const Home = ({navigation}) => {
         />
         <Card.Content>
           <Text style={styles.statusText}>Type: {item.buildingType}</Text>
-          <Text style={styles.statusText}>Applicant: {item.details.ApplicationDetail.ApplicantName}</Text>
-          <Text style={styles.remarkText}>Contact: {item.details.ApplicationDetail.MobileNumber}</Text>
+          <Text style={styles.statusText}>
+            Applicant: {item.details.ApplicationDetail.ApplicantName}
+          </Text>
+          <Text style={styles.remarkText}>
+            Contact: {item.details.ApplicationDetail.MobileNumber}
+          </Text>
         </Card.Content>
         <Card.Actions style={styles.cardActions}>
           <Button
@@ -299,7 +165,6 @@ const Home = ({navigation}) => {
             onPress={() => handleDetails(item)}
             style={styles.detailsButton}>
             <Text style={styles.buttonText}>View Details</Text>
-            
           </Button>
         </Card.Actions>
       </Card>
@@ -311,7 +176,6 @@ const Home = ({navigation}) => {
       <Calendar
         onDayPress={day => setSelectedDate(day.dateString)}
         markedDates={markedDates}
-        
         theme={{
           arrowColor: '#ff8400',
           todayTextColor: '#F4A300',
@@ -337,6 +201,13 @@ const Home = ({navigation}) => {
           styles.flatListContainer,
           filteredEvents.length === 0 && styles.emptyFlatList,
         ]}
+        ListEmptyComponent={
+          <View style={styles.emptyStateContainer}>
+            <Text style={styles.emptyStateText}>
+              No inspections scheduled for this date.
+            </Text>
+          </View>
+        }
       />
     </View>
   );
@@ -345,12 +216,12 @@ const Home = ({navigation}) => {
 const styles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
-    fontFamily:'DMSans Bold',
+    fontFamily: 'DMSans Bold',
     color: '#2b2e36',
   },
   okbuttonText: {
     fontSize: 14,
-    fontFamily:'DMSans Bold',
+    fontFamily: 'DMSans Bold',
     color: '#fff',
   },
   container: {
@@ -379,22 +250,22 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 18,
     color: '#2b2e36',
-    fontFamily:'DMSans Bold'
+    fontFamily: 'DMSans Bold',
   },
   cardSubtitle: {
     fontSize: 15,
     color: '#bfbfbf',
-    fontFamily:'DMSans Bold'
+    fontFamily: 'DMSans Bold',
   },
   statusText: {
     fontSize: 15,
     color: '#2b2e36',
-    fontFamily:'DMSans Regular'
+    fontFamily: 'DMSans Regular',
   },
   remarkText: {
     fontSize: 13,
     color: '#2b2e36',
-    fontFamily:'DM Sans Regular'
+    fontFamily: 'DM Sans Regular',
   },
   cardActions: {
     flexDirection: 'row',
@@ -404,8 +275,8 @@ const styles = StyleSheet.create({
   okButton: {
     backgroundColor: '#ff8400',
     borderRadius: 4,
-    color:'#fff',
-    fontFamily:'DM Sans Bold'
+    color: '#fff',
+    fontFamily: 'DM Sans Bold',
     // paddingVertical: 5,
   },
   detailsButton: {
@@ -418,21 +289,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   flatListContainer: {
-        paddingVertical: 10, // Add vertical padding
-        paddingHorizontal: 5, // Add horizontal padding
-        backgroundColor: '#FFFFFF',
-        paddingBottom:150, // Set background color
-    },
-    emptyFlatList: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F0F0F0', // Light gray background for empty state
-    },
-    calendar: {
-        height: 300, // Set your desired height here
-        // marginBottom: 20, // Optional: add margin for spacing
-    },
+    paddingVertical: 10, // Add vertical padding
+    paddingHorizontal: 5, // Add horizontal padding
+    backgroundColor: '#FFFFFF',
+    paddingBottom: 150, // Set background color
+  },
+  emptyFlatList: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0', // Light gray background for empty state
+  },
+  calendar: {
+    height: 300, // Set your desired height here
+    // marginBottom: 20, // Optional: add margin for spacing
+  },
+  emptyStateContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 20,
+  backgroundColor: '#FFFFFF',
+},
+emptyStateText: {
+  fontSize: 16,
+  fontFamily: 'DMSans-Regular',
+  color: '#bfbfbf',
+  textAlign: 'center',
+},
+
 });
 
 export default Home;
